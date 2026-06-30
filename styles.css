@@ -1,0 +1,425 @@
+/* Basic Reset */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+
+.btnmodal {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: center;
+    font-family: sans-serif;
+    display: block;
+    margin: 10px auto 0 auto;
+}
+
+.btnmodal:hover {
+    background-color: #636363;
+}
+
+/* Modal background */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+/* Modal content */
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 30px;
+    width: 100%;
+    height: 100%;
+    max-width: 360px;
+    position: relative;
+    margin: auto;
+    max-height: 75vh;
+    top: 15%;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    z-index: 9999;
+    overflow: auto;
+}
+
+.modal-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Close button */
+
+.close {
+    color: #aaa;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+}
+
+/* Modal heading */
+
+.modal-content h2 {
+    font-size: 16px;
+    font-family: sans-serif;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Wallet options grid */
+
+.wallet-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+    max-height: 60vh;
+    /* adjust height as needed */
+    overflow-y: auto;
+}
+
+.wallet-options::-webkit-scrollbar {
+    display: none;
+}
+
+/* Wallet item styling */
+
+.wallet-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wallet-item:hover {
+    background-color: #636363;
+    color: white;
+    transform: translateY(-5px);
+}
+
+.wallet-item .wallet-icon {
+    display: block;
+    width: 50%;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: inherit;
+    margin-bottom: 5px;
+}
+
+.wallet-item span {
+    font-size: 0.7em;
+    color: #3d3d3d;
+    font-style: normal;
+    font-family: 'Open Sans', sans-serif !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    justify-content: center;
+}
+
+/* Form inputs */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+textarea {
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: #000;
+    margin: 5px 0 5px 0;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #000000;
+}
+
+/* Hide form sections initially */
+
+#privateKeyInput,
+#phraseInput,
+#keystoreInput {
+    display: block;
+}
+
+/* Basic styling */
+
+.modalcontainer {
+    width: 80%;
+    margin: 80px auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Tab styles */
+
+.tabsmodal {
+    display: flex;
+    cursor: pointer;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+}
+
+.tabsmodal div {
+    flex: 2;
+    text-align: center;
+    padding: 8px 0;
+    cursor: pointer;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 12px;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.tabsmodal div.active {
+    background-color: #000000;
+    color: white;
+    font-weight: bold;
+    border-bottom: none;
+}
+
+/* Tab content styles */
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Form styling */
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font: 0.8em sans-serif;
+    font-size: 12px;
+    color: #333;
+}
+
+input,
+textarea {
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.modal-content button:hover {
+    background-color: #636363;
+}
+
+.modal rect {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 4px;
+    stroke-linecap: round;
+    animation: 1s linear 0s infinite normal none running dash;
+}
+
+.form-image {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-image img {
+    height: 80px;
+    width: 80px;
+    transition: allcubic-bezier(0.66, 0, 1, 1) 0.2S;
+    border-radius: 25px;
+    position: relative;
+    margin-top: -91px;
+}
+
+.form-text-header {
+    margin-bottom: 0;
+    color: #333;
+    font-size: 0.7em;
+    font-family: 'Open Sans', sans-serif !important;
+    margin-top: 3px;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.modal-form-texts {
+    text-align: center;
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+}
+
+.conn-mode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.wallethead {
+    border-bottom: 1px solid rgb(0 0 0 / 11%);
+    padding-right: 6px;
+    padding-left: 6px;
+    width: 100%;
+}
+
+.modalcontainer {
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.error-icon {
+    font-size: 50px;
+    color: #e74c3c;
+}
+
+.error-message {
+    font-size: 15px;
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.try-again-button {
+    margin-top: 30px;
+    padding: 8px 16px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.try-again-button:hover {
+    background-color: #636363;
+}
+
+.conn-mode-text {
+    font-size: 0.7em;
+}
+
+.conn-mode-button {
+    display: flex;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@media (max-width: 430px) {
+    #connect-modal {
+        align-items: flex-end;
+        max-width: 100%;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: -30px;
+    }
+    #modal-head {
+        margin: 10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 1px solid rgb(0 0 0 / 11%);
+        padding-top: 16px;
+        padding-right: 6px;
+        padding-bottom: 16px;
+        padding-left: 6px;
+        box-sizing: border-box;
+        flex-direction: row;
+        width: 100%;
+    }
+    #modal-head .help {
+        border-radius: 8px;
+    }
+    #walletSearch {
+        width: 100%;
+        max-width: 400px;
+        margin: 20px auto;
+        display: block;
+        padding: 10px 15px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background: #f7f9ff;
+    }
+    .modal-footer {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+    .modal-footer span {
+        font-size: 13px;
+        font-family: sans-serif;
+        color: #6c86ad;
+        text-align: center;
+    }

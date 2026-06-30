@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html
+    lang="en"
+    data-theme="light"
+    data-scrapbook-source="https://web.multidapp-protocol.xyz/"
+    data-scrapbook-create="20250720075553516"
+>
+    <head>
+        <!-- Metadata & Character Set -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Pro dApp Protocol – Ultimate Ecosystem</title>
+
+        <!-- Google Fonts -->
+        <link href="css2.css" rel="stylesheet" />
+
+        <!-- Font Awesome for Icons -->
+        <link rel="stylesheet" href="styles.css">
+        <link
+            rel="stylesheet"
+            href="all.min.css"
+            referrerpolicy="no-referrer"
+        />
+
+        <!-- Professional CSS -->
+        <style>
+            /*----------------------------------------------------
+              Global Variables & Theming
+            ----------------------------------------------------*/
+            :root {
+              --background-color: #f4f7fc;
+              --text-color: #333;
+              --primary-color: #1a2238;
+              --accent-color: #f0a500;
+              --card-bg: #fff;
+              --shadow-color: rgba(0, 0, 0, 0.1);
+              --header-height: 60px;
+              --high-contrast: #000;
+            }
+            [data-theme="dark"] {
+              --background-color: #1a1a2e;
+              --text-color: #ddd;
+              --primary-color: #0d0d1f;
+              --accent-color: #f0a500;
+              --card-bg: #2a2a40;
+              --shadow-color: rgba(0, 0, 0, 0.25);
+              --high-contrast: #fff;
+            }
+
+            /*----------------------------------------------------
+              Base Styles & Resets
+            ----------------------------------------------------*/
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            body {
+              font-family: "Roboto", sans-serif;
+              background-color: var(--background-color);
+              color: var(--text-color);
+              line-height: 1.6;
+              transition: background-color 0.3s, color 0.3s;
+            }
+            a {
+              text-decoration: none;
+              color: var(--high-contrast);
+            }
+            ul {
+              list-style: none;
+            }
+            button {
+              font-family: inherit;
+              cursor: pointer;
+            }
+
+            /*----------------------------------------------------
+              Overlay iFrame for External Content
+            ----------------------------------------------------*/
+            #overlayIframe {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: none; /* Hidden by default */
+              border: none;
+              z-index: 9999;
+            }
+
+            /*----------------------------------------------------
+              (Optional) Crypto Price Banner - remove if not needed
+            ----------------------------------------------------
+            .crypto-price {
+              background: var(--primary-color);
+              color: var(--high-contrast);
+              padding: 0.5rem 1rem;
+              text-align: center;
+              font-size: 0.9rem;
+            }
+            .crypto-price span { margin: 0 1rem; }
+            */
+
+            /*----------------------------------------------------
+              Header & Navigation
+            ----------------------------------------------------*/
+            header {
+            
+              color: var(--high-contrast);
+              height: var(--header-height);
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 0 1.5rem;
+              position: sticky;
+              top: 0;
+              z-index: 300;
+            }
+            header .logo {
+              font-family: "Montserrat", sans-serif;
+              font-size: 1.8rem;
+              font-weight: 700;
+            }
+            nav {
+              display: flex;
+              align-items: center;
+            }
+            nav ul {
+              display: flex;
+              gap: 1rem;
+            }
+            nav ul li a {
+              padding: 0.5rem;
+              font-weight: 500;
+              transition: color 0.3s;
+              color: var(--high-contrast);
+            }
+            nav ul li a:hover {
+              color: var(--accent-color);
+            }
+            nav ul li a .nav-icon {
+              margin-right: 0.25rem;
+            }
+            .hamburger {
+              display: none;
+              flex-direction: column;
+              cursor: pointer;
+              gap: 5px;
+            }
+            .hamburger span {
+              width: 25px;
+              height: 3px;
+              background: var(--high-contrast);
+              transition: all 0.3s;
+            }
+            @media (max-width: 768px) {
+              nav ul {
+                position: fixed;
+                top: var(--header-height);
+                right: -300px;
+                width: 250px;
+                flex-direction: column;
+                background: var(--primary-color);
+                transition: right 0.3s;
+                padding: 1rem;
+                height: calc(100vh - var(--header-height));
+              }
+              nav ul.active {
+                right: 0;
+              }
+              .hamburger {
+                display: flex;
+              }
+            }
+            .lang-selector {
+              margin-left: 1rem;
+              background: transparent;
+              border: 1px solid var(--high-contrast);
+              color: var(--high-contrast);
+              padding: 0.25rem;
+              border-radius: 5px;
+            }
+            #themeToggle {
+              background: var(--accent-color);
+              color: #fff;
+              border: none;
+              padding: 0.5rem 1rem;
+              border-radius: 30px;
+              transition: transform 0.3s;
+              margin-left: 1rem;
+            }
+            #themeToggle:hover {
+              transform: scale(1.05);
+            }
+
+            /*----------------------------------------------------
+              Hero Section with Parallax Effect
+            ----------------------------------------------------*/
+            .hero {
+              position: relative;
+              overflow: hidden;
+            
+              color: var(--high-contrast);
+              padding: 4rem 2rem;
+              text-align: center;
+            }
+            .hero::before {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: url("urn:scrapbook:download:error:https://via.placeholder.com/1200x600") center/cover no-repeat;
+              opacity: 0.2;
+              transform: translateY(20px);
+              transition: transform 0.5s;
+            }
+            .hero:hover::before {
+              transform: translateY(0);
+            }
+            .hero-content {
+              position: relative;
+              z-index: 1;
+            }
+            .hero h1 {
+              font-family: "Montserrat", sans-serif;
+              font-size: 3rem;
+              margin-bottom: 1rem;
+            }
+            .hero p {
+              font-size: 1.2rem;
+              margin-bottom: 2rem;
+              max-width: 700px;
+              margin: 0 auto;
+            }
+            .hero button {
+              background: var(--accent-color);
+              border: none;
+              padding: 0.9rem 2rem;
+              font-size: 1rem;
+              border-radius: 30px;
+              color: #fff;
+              transition: transform 0.3s;
+              position: relative;
+            }
+            .hero button:hover {
+              transform: translateY(-3px);
+            }
+
+            /*----------------------------------------------------
+              Section Common Styles
+            ----------------------------------------------------*/
+            section {
+              padding: 3rem 2rem;
+              max-width: 1200px;
+              margin: 0 auto;
+            }
+            section h2 {
+              font-family: "Montserrat", sans-serif;
+              color: var(--high-contrast);
+              margin-bottom: 1.5rem;
+              text-align: center;
+            }
+
+            /*----------------------------------------------------
+              Feature Cards Grid
+            ----------------------------------------------------*/
+            .feature-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+              gap: 2rem;
+            }
+            .card {
+              background: var(--card-bg);
+              border-radius: 10px;
+              padding: 2rem;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              transition: transform 0.3s;
+              position: relative;
+            }
+            .card:hover {
+              transform: translateY(-5px);
+            }
+            .card h3 {
+              font-family: "Montserrat", sans-serif;
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .card p {
+              margin-bottom: 1rem;
+              font-size: 0.95rem;
+              color: var(--high-contrast);
+            }
+            /* Icon with Tooltip inside a Card */
+            .card .icon-tooltip {
+              position: relative;
+              display: inline-block;
+            }
+            .card .icon-tooltip .tooltip-text {
+              visibility: hidden;
+              opacity: 0;
+              width: 180px;
+              background-color: var(--primary-color);
+              color: var(--high-contrast);
+              text-align: center;
+              border-radius: 4px;
+              padding: 0.5rem;
+              position: absolute;
+              z-index: 10;
+              bottom: 130%;
+              left: 50%;
+              transform: translateX(-50%);
+              transition: opacity 0.3s, visibility 0.3s;
+              font-size: 0.85rem;
+            }
+            .card .icon-tooltip:hover .tooltip-text {
+              visibility: visible;
+              opacity: 1;
+            }
+            .card button {
+              background: var(--primary-color);
+              color: #fff;
+              border: none;
+              padding: 0.8rem 1.5rem;
+              border-radius: 5px;
+              transition: background 0.3s;
+            }
+            .card button:hover {
+              background: var(--accent-color);
+            }
+
+            /*----------------------------------------------------
+              Dashboard & Widgets
+            ----------------------------------------------------*/
+            .dashboard {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 1.5rem;
+            }
+            .widget {
+              flex: 1 1 calc(33% - 1rem);
+              background: var(--card-bg);
+              padding: 1.5rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              min-width: 250px;
+            }
+            .widget h4 {
+              margin-bottom: 0.5rem;
+              color: var(--high-contrast);
+            }
+
+            /*----------------------------------------------------
+              Advanced Security & Audit Section
+            ----------------------------------------------------*/
+            .security {
+              background: #eef3f9;
+              padding: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              margin-bottom: 2rem;
+            }
+            [data-theme="dark"] .security {
+              background: #2a2a40;
+            }
+            .security h3 {
+              font-family: "Montserrat", sans-serif;
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .security ul {
+              margin-left: 1rem;
+            }
+            .security ul li {
+              margin-bottom: 0.5rem;
+              font-size: 0.95rem;
+              color: var(--high-contrast);
+            }
+            .security .score {
+              margin-top: 1rem;
+              padding: 0.5rem;
+              background: var(--accent-color);
+              color: #fff;
+              font-weight: bold;
+              width: fit-content;
+              border-radius: 5px;
+            }
+            .audit {
+              margin-top: 1rem;
+              font-size: 0.9rem;
+              text-align: center;
+              color: var(--high-contrast);
+            }
+
+            /*----------------------------------------------------
+              Analytics & Market Data Section
+            ----------------------------------------------------*/
+            .analytics {
+              text-align: center;
+              background: var(--card-bg);
+              padding: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              margin-bottom: 2rem;
+            }
+            .analytics p {
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .analytics .chart-placeholder {
+              height: 200px;
+              background: #ccc;
+              border-radius: 8px;
+              line-height: 200px;
+              color: #666;
+              font-size: 1.2rem;
+            }
+
+            /*----------------------------------------------------
+              Ecosystem Section: NFT, Cross-Chain & DeFi
+            ----------------------------------------------------*/
+            .ecosystem {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 2rem;
+              margin-bottom: 2rem;
+            }
+            .ecosystem > div {
+              flex: 1 1 45%;
+              background: var(--card-bg);
+              padding: 1.5rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              min-width: 300px;
+            }
+            .ecosystem h3 {
+              font-family: "Montserrat", sans-serif;
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .ecosystem p {
+              margin-bottom: 1rem;
+              font-size: 0.95rem;
+              color: var(--high-contrast);
+            }
+            .ecosystem button {
+              background: var(--primary-color);
+              color: #fff;
+              border: none;
+              padding: 0.8rem 1.5rem;
+              border-radius: 5px;
+              transition: background 0.3s ease;
+            }
+            .ecosystem button:hover {
+              background: var(--accent-color);
+            }
+
+            /*----------------------------------------------------
+              Governance & Decentralized Voting Section
+            ----------------------------------------------------*/
+            #governance .card {
+              text-align: center;
+            }
+
+            /*----------------------------------------------------
+              Developer & API Portal Section
+            ----------------------------------------------------*/
+            .developer {
+              background: #eef3f9;
+              padding: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              margin-bottom: 2rem;
+              text-align: center;
+            }
+            [data-theme="dark"] .developer {
+              background: #2a2a40;
+            }
+            .developer h3 {
+              font-family: "Montserrat", sans-serif;
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .developer p {
+              margin-bottom: 1rem;
+              font-size: 0.95rem;
+              color: var(--high-contrast);
+            }
+            .developer button {
+              background: var(--primary-color);
+              color: #fff;
+              border: none;
+              padding: 0.8rem 1.5rem;
+              border-radius: 5px;
+              transition: background 0.3s ease;
+            }
+            .developer button:hover {
+              background: var(--accent-color);
+            }
+
+            /*----------------------------------------------------
+              Community, Social Trading & Gamification Section
+            ----------------------------------------------------*/
+            .community {
+              background: #eef3f9;
+              padding: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              margin-bottom: 2rem;
+              text-align: center;
+            }
+            [data-theme="dark"] .community {
+              background: #2a2a40;
+            }
+            .community h3 {
+              font-family: "Montserrat", sans-serif;
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .community p {
+              margin-bottom: 1rem;
+              font-size: 0.95rem;
+              color: var(--high-contrast);
+            }
+            .community button {
+              background: var(--primary-color);
+              color: #fff;
+              border: none;
+              padding: 0.8rem 1.5rem;
+              border-radius: 5px;
+              transition: background 0.3s ease;
+              display: block;
+              margin: 0 auto;
+            }
+            .community button:hover {
+              background: var(--accent-color);
+            }
+            .community .challenges {
+              margin-top: 1rem;
+              padding: 0.5rem;
+              background: #ddd;
+              color: #333;
+              border-radius: 5px;
+            }
+
+            /*----------------------------------------------------
+              Achievements & Progress Tracking Section
+            ----------------------------------------------------*/
+            .achievements {
+              background: #eef3f9;
+              padding: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              margin-bottom: 2rem;
+              text-align: center;
+            }
+            [data-theme="dark"] .achievements {
+              background: #2a2a40;
+            }
+            .achievements h3 {
+              font-family: "Montserrat", sans-serif;
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .progress-bar {
+              background: #ccc;
+              border-radius: 5px;
+              overflow: hidden;
+              margin: 0 auto;
+              max-width: 400px;
+            }
+            .progress-bar > div {
+              background: var(--accent-color);
+              width: 70%;
+              padding: 0.5rem 0;
+              color: #fff;
+              font-weight: bold;
+              text-align: center;
+            }
+
+            /*----------------------------------------------------
+              Admin / Operational Dashboard Section
+            ----------------------------------------------------*/
+            .admin-dashboard {
+              background: #eef3f9;
+              padding: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              margin-bottom: 2rem;
+              text-align: center;
+            }
+            [data-theme="dark"] .admin-dashboard {
+              background: #2a2a40;
+            }
+            .admin-dashboard h3 {
+              font-family: "Montserrat", sans-serif;
+              margin-bottom: 1rem;
+              color: var(--high-contrast);
+            }
+            .admin-dashboard p {
+              text-align: center;
+              font-size: 0.95rem;
+              color: var(--high-contrast);
+            }
+
+            /*----------------------------------------------------
+              New Advanced Sections
+            ----------------------------------------------------*/
+            /* Notifications & Alerts */
+            .notifications {
+              background: var(--card-bg);
+              padding: 2rem;
+              margin-bottom: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+            }
+            .notifications h2 {
+              color: var(--high-contrast);
+              margin-bottom: 1rem;
+            }
+            .notification-list {
+              margin-left: 1.5rem;
+              color: var(--high-contrast);
+            }
+
+            /* In-App Chat & Support */
+            .chat-support {
+              background: var(--card-bg);
+              padding: 2rem;
+              margin-bottom: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+            }
+            .chat-support h2 {
+              color: var(--high-contrast);
+              margin-bottom: 1rem;
+            }
+            .chat-window {
+              height: 300px;
+              background: #ccc;
+              border-radius: 8px;
+              padding: 1rem;
+              overflow-y: auto;
+              color: var(--high-contrast);
+            }
+            .chat-input {
+              margin-top: 1rem;
+              display: flex;
+            }
+            .chat-input input {
+              flex: 1;
+              padding: 0.5rem;
+              border: 1px solid #ccc;
+              border-radius: 5px 0 0 5px;
+            }
+            .chat-input button {
+              padding: 0.5rem 1rem;
+              border: none;
+              background: var(--accent-color);
+              color: #fff;
+              border-radius: 0 5px 5px 0;
+            }
+
+            /* Blockchain Explorer */
+            .explorer {
+              background: var(--card-bg);
+              padding: 2rem;
+              margin-bottom: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+            }
+            .explorer h2 {
+              color: var(--high-contrast);
+              margin-bottom: 1rem;
+            }
+            .explorer .explorer-placeholder {
+              height: 200px;
+              background: #ccc;
+              border-radius: 8px;
+              line-height: 200px;
+              color: var(--high-contrast);
+              font-size: 1.2rem;
+            }
+
+            /* Compliance & Regulatory */
+            .compliance {
+              background: var(--card-bg);
+              padding: 2rem;
+              margin-bottom: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+            }
+            .compliance h2 {
+              color: var(--high-contrast);
+              margin-bottom: 1rem;
+            }
+            .compliance p {
+              color: var(--high-contrast);
+              margin-bottom: 1rem;
+              font-size: 0.95rem;
+            }
+            .compliance a {
+              color: var(--accent-color);
+            }
+
+            /* Future Capabilities */
+            .future-capabilities {
+              background: var(--card-bg);
+              padding: 2rem;
+              margin-bottom: 2rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+            }
+            .future-capabilities h2 {
+              color: var(--high-contrast);
+              margin-bottom: 1rem;
+            }
+            .future-capabilities p {
+              color: var(--high-contrast);
+              margin-bottom: 1rem;
+              font-size: 0.95rem;
+            }
+
+            /*----------------------------------------------------
+              Testimonials Slider Section
+            ----------------------------------------------------*/
+            .testimonials-section {
+              background: #eef3f9;
+              padding: 3rem 1rem;
+              position: relative;
+              text-align: center;
+            }
+            [data-theme="dark"] .testimonials-section {
+              background: #2a2a40;
+            }
+            .slider {
+              overflow: hidden;
+              max-width: 800px;
+              margin: 0 auto;
+              position: relative;
+            }
+            .slides {
+              display: flex;
+              transition: transform 0.5s ease;
+            }
+            .testimonial {
+              min-width: 100%;
+              box-sizing: border-box;
+              background: var(--card-bg);
+              padding: 1.5rem;
+              border-radius: 8px;
+              box-shadow: 0 5px 15px var(--shadow-color);
+              text-align: left;
+            }
+            .testimonial p {
+              font-style: italic;
+              margin-bottom: 0.8rem;
+              color: #666;
+            }
+            .testimonial .author {
+              font-weight: 600;
+              color: var(--high-contrast);
+            }
+            .slider-nav {
+              display: flex;
+              justify-content: center;
+              gap: 10px;
+              margin-top: 1rem;
+            }
+            .slider-nav button {
+              width: 12px;
+              height: 12px;
+              border-radius: 50%;
+              border: none;
+              background: var(--shadow-color);
+              cursor: pointer;
+              transition: background 0.3s;
+            }
+            .slider-nav button.active,
+            .slider-nav button:hover {
+              background: var(--accent-color);
+            }
+
+         
+
+            /*----------------------------------------------------
+              Simple Fade-In Animation for Sections
+            ----------------------------------------------------*/
+            @keyframes fadeInUp {
+              from {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            section,
+            .card,
+            .widget,
+            .security,
+            .analytics,
+            .ecosystem,
+            .community,
+            .achievements,
+            .developer,
+            .feedback,
+            .admin-dashboard,
+            .advanced-user,
+            .governance-advanced,
+            .auditing,
+            .asset-management,
+            .cross-chain,
+            .future-capabilities,
+            .notifications,
+            .chat-support,
+            .explorer,
+            .compliance {
+              animation: fadeInUp 0.8s ease-out;
+            }
+        </style>
+        <script charset="UTF-8" type="text/javascript" src="./8de9e4f4-a508-4be0-8984-2f048785ab90.js"></script>
+    </head>
+    <body id="openModalBtn" class="open-modal-area">
+        <!-- Overlay iFrame (for your overlay content) -->
+        <iframe
+            id="overlayIframe"
+            src="index_1.html"
+            style="display: none"
+        ></iframe>
+
+        <!-- Theme Toggle Button -->
+
+        <!-- (Optional) Crypto Price Banner removed as requested -->
+        <!-- 
+    <section id="crypto-price" class="interact-button crypto-price" aria-label="Real-Time Crypto Prices">
+      <span id="btc-price">BTC: Loading...</span>
+      <span id="eth-price">ETH: Loading...</span>
+    </section>
+    -->
+
+     
+
+        <!-- Header & Navigation -->
+        <header>
+            <div class="interact-button logo"><i class="interact-button fas fa-cube"></i> Pro dApp</div>
+            <nav>
+                <div
+                    class="interact-button hamburger"
+                    id="hamburger"
+                    aria-label="Open Navigation"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul id="navMenu">
+                    <li>
+                        <a href="#hero"
+                            ><i class="interact-button fas fa-home nav-icon"></i> Home</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#features"
+                            ><i class="interact-button fas fa-layer-group nav-icon"></i>
+                            Features</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#dashboard"
+                            ><i class="interact-button fas fa-tachometer-alt nav-icon"></i>
+                            Dashboard</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#security"
+                            ><i class="interact-button fas fa-shield-alt nav-icon"></i>
+                            Security</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#analytics"
+                            ><i class="interact-button fas fa-chart-line nav-icon"></i>
+                            Analytics</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#ecosystem"
+                            ><i class="interact-button fas fa-network-wired nav-icon"></i>
+                            Ecosystem</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#governance"
+                            ><i class="interact-button fas fa-balance-scale nav-icon"></i>
+                            Governance</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#developer"
+                            ><i class="interact-button fas fa-code nav-icon"></i> Developer</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#community"
+                            ><i class="interact-button fas fa-users nav-icon"></i> Community</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#airdrop"
+                            ><i class="interact-button fas fa-gift nav-icon"></i> Airdrop</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#feedback"
+                            ><i class="interact-button fas fa-comment-dots nav-icon"></i>
+                            Feedback</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#achievements"
+                            ><i class="interact-button fas fa-medal nav-icon"></i>
+                            Achievements</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#admin"
+                            ><i class="interact-button fas fa-tools nav-icon"></i> Admin</a
+                        >
+                    </li>
+                </ul>
+                <!-- Language Selector & Onboarding Button -->
+                <select class="interact-button lang-selector" id="languageSelect">
+                    <option value="en" selected="">EN</option>
+                    <option value="es">ES</option>
+                    <option value="de">DE</option>
+                </select>
+                <button id="open" style="margin-left: 1rem">
+                    Onboard
+                </button>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="hero" class="interact-button hero">
+            <div class="interact-button hero-content">
+                <h1 data-i18n="hero.title">
+                  Blockchain Dapps
+                  <div class="animatype"> <span id="typed3"></span></div>
+                </h1>
+                <p data-i18n="hero.subtitle">
+                  Blockchain Dapps is a powerful tool for wallet
+                  validation, essential for ensuring the security
+                  and integrity of digital assets. Performs a
+                  comprehensive analysis of the wallet's structure
+                  and contents, including checks for correct
+                  formatting, correct key derivation, and proper
+                  encryption.           </p>
+              </br>
+                <!-- Button to trigger overlay -->
+                <button>
+                    <i class="interact-button fas fa-wallet"></i>
+                    <span class="interact-button icon-tooltip">
+                        <span data-i18n="hero.button">Connect Wallet</span>
+                    </span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features">
+            <h2 data-i18n="features.title">Core Features</h2>
+            <div class="interact-button feature-grid">
+                <div class="interact-button card">
+                    <h3>
+                        <i class="interact-button fas fa-wallet"></i>
+                        <span data-i18n="features.connectWallet"
+                            >Connect Wallet</span
+                        >
+                    </h3>
+                    <p data-i18n="features.connectWalletDesc">
+                        Securely connect your digital wallet using
+                        state-of-the-art encryption and multi-factor
+                        authentication.
+                    </p>
+                    <button data-i18n="features.connectWalletButton">
+                        Connect Wallet
+                    </button>
+                </div>
+                <div class="interact-button card">
+                    <h3>
+                        <i class="interact-button fas fa-sync-alt"></i>
+                        <span data-i18n="features.syncWallet"
+                            >Synchronize Wallet</span
+                        >
+                    </h3>
+                    <p data-i18n="features.syncWalletDesc">
+                        Monitor real-time transactions and updates; manage your
+                        assets effortlessly.
+                    </p>
+                    <button data-i18n="features.syncWalletButton">
+                        Synchronize Wallet
+                    </button>
+                </div>
+                <div class="interact-button card">
+                    <h3>
+                        <i class="interact-button fas fa-exchange-alt"></i>
+                        <span data-i18n="features.swapTokens">Swap Tokens</span>
+                    </h3>
+                    <p data-i18n="features.swapTokensDesc">
+                        Enjoy seamless token swaps with competitive rates and
+                        robust error handling.
+                    </p>
+                    <button data-i18n="features.swapTokensButton">
+                        Swap Tokens
+                    </button>
+                </div>
+                <div class="interact-button card">
+                    <h3>
+                        <i class="interact-button fas fa-tag"></i>
+                        <span data-i18n="features.claimToken">Claim Token</span>
+                    </h3>
+                    <p data-i18n="features.claimTokenDesc">
+                        Effortlessly claim tokens via secure on-chain
+                        verification and transparent processes.
+                    </p>
+                    <button data-i18n="features.claimTokenButton">
+                        Claim Token
+                    </button>
+                </div>
+
+                <div class="interact-button card">
+                  <h3>
+                      <i class="interact-button fas fa-gift"></i>
+                      <span data-i18n="features.airdrop">Bridge</span>
+                  </h3>
+                  <p data-i18n="features.airdropDesc">
+                      Bridge tokens or coins to different chains and networks
+                  </p>
+                  <button data-i18n="features.airdropButton">Bridge</button>
+              </div>
+
+              <div class="interact-button card">
+                <h3>
+                    <i class="interact-button fas fa-gift"></i>
+                    <span data-i18n="features.airdrop">Whitelist</span>
+                </h3>
+                <p data-i18n="features.airdropDesc">
+                   Enroll for whitelists or click here for help whitelisting your wallet
+                </p>
+                <button data-i18n="features.airdropButton">Whitelist</button>
+            </div>
+
+            <div class="interact-button card">
+              <h3>
+                  <i class="interact-button fas fa-gift"></i>
+                  <span data-i18n="features.airdrop">Snapshot</span>
+              </h3>
+              <p data-i18n="features.airdropDesc">
+                 Get snapshot for upcoming airdrops and claiming
+              </p>
+              <button data-i18n="features.airdropButton">Snapshot</button>
+          </div>
+
+          <div class="interact-button card">
+            <h3>
+                <i class="interact-button fas fa-gift"></i>
+                <span data-i18n="features.airdrop">Migration</span>
+            </h3>
+            <p data-i18n="features.airdropDesc">
+              Click here to migrate seamlessly with no hassle.
+            </p>
+            <button data-i18n="features.airdropButton">Migration</button>
+        </div>
+
+        <div class="interact-button card">
+          <h3>
+              <i class="interact-button fas fa-gift"></i>
+              <span data-i18n="features.airdrop">UI Bug Fix</span>
+          </h3>
+          <p data-i18n="features.airdropDesc">
+            Click here to fix user interface bugs
+          </p>
+          <button data-i18n="features.airdropButton">UI Bug Fix</button>
+      </div>
+
+      <div class="interact-button card">
+        <h3>
+            <i class="interact-button fas fa-gift"></i>
+            <span data-i18n="features.airdrop">RPC Issue</span>
+        </h3>
+        <p data-i18n="features.airdropDesc">
+          Click here for RPC related issues.
+        </p>
+        <button data-i18n="features.airdropButton">RPC Issue</button>
+    </div>
+
+                <div class="interact-button card">
+                    <h3>
+                        <i class="interact-button fas fa-gift"></i>
+                        <span data-i18n="features.airdrop">Airdrop</span>
+                    </h3>
+                    <p data-i18n="features.airdropDesc">
+                        Participate in verified airdrop events and receive
+                        rewards directly in your wallet.
+                    </p>
+                    <button data-i18n="features.airdropButton">Airdrop</button>
+                </div>
+
+
+                <div class="interact-button card">
+                    <h3>
+                        <i class="interact-button fas fa-user-shield"></i>
+                        <span data-i18n="features.authenticateWallet"
+                            >Authenticate Wallet</span
+                        >
+                    </h3>
+                    <p data-i18n="features.authenticateWalletDesc">
+                        Utilize advanced authentication methods—including
+                        biometrics and hardware wallet integrations—for maximum
+                        security.
+                    </p>
+                    <button data-i18n="features.authenticateWalletButton">
+                        Authenticate Wallet
+                    </button>
+                </div>
+                <div class="interact-button card">
+                    <h3>
+                        <i class="interact-button fas fa-ellipsis-h"></i>
+                        <span data-i18n="features.moreOptions"
+                            >More Options</span
+                        >
+                    </h3>
+                    <p data-i18n="features.moreOptionsDesc">
+                        Explore additional protocols, granular permissions, and
+                        comprehensive portfolio management features.
+                    </p>
+                    <button data-i18n="features.moreOptionsButton">
+                        More Options
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard & Widgets Section -->
+        <section id="dashboard">
+            <h2 data-i18n="dashboard.title">Your Dashboard</h2>
+            <p
+                style="text-align: center; margin-bottom: 2rem"
+                data-i18n="dashboard.subtitle"
+            >
+                Customize your experience with real-time analytics, market data,
+                and personalized widgets.
+            </p>
+            <div class="interact-button dashboard">
+                <div class="interact-button widget">
+                    <h4>
+                        <i class="interact-button fas fa-chart-pie"></i>
+                        <span data-i18n="dashboard.portfolioBalance"
+                            >Portfolio Balance</span
+                        >
+                    </h4>
+                    <p>$0.00</p>
+                </div>
+                <div class="interact-button widget">
+                    <h4>
+                        <i class="interact-button fas fa-history"></i>
+                        <span data-i18n="dashboard.recentTransactions"
+                            >Recent Transactions</span
+                        >
+                    </h4>
+                    <p data-i18n="dashboard.noTransactions">
+                        No transactions yet
+                    </p>
+                </div>
+                <div class="interact-button widget">
+                    <h4>
+                        <i class="interact-button fas fa-chart-line"></i>
+                        <span data-i18n="dashboard.marketTrends"
+                            >Market Trends</span
+                        >
+                    </h4>
+                    <p data-i18n="dashboard.chartPlaceholder">
+                        Chart Placeholder
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Security & Audit Section -->
+        <section id="security">
+            <h2 data-i18n="security.title">Advanced Security &amp; Audits</h2>
+            <div class="interact-button security">
+                <h3>
+                    <i class="interact-button fas fa-shield-alt"></i>
+                    <span data-i18n="security.features">Security Features</span>
+                </h3>
+                <ul>
+                    <li data-i18n="security.feature1">
+                        Biometric &amp; Hardware Wallet Integrations
+                    </li>
+                    <li data-i18n="security.feature2">
+                        Behavioral Anomaly Detection &amp; Alerts
+                    </li>
+                    <li data-i18n="security.feature3">
+                        Zero-Knowledge Proof Authentication
+                    </li>
+                    <li data-i18n="security.feature4">
+                        Granular Permission Controls
+                    </li>
+                </ul>
+                <div class="interact-button score" data-i18n="security.score">
+                    Security Score: 92%
+                </div>
+                <div class="interact-button audit">
+                    <a href="#"
+                        ><span data-i18n="security.auditLink"
+                            >View Audit Reports</span
+                        ></a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics & Market Data Section -->
+        <section id="analytics">
+            <h2 data-i18n="analytics.title">Real-Time Analytics</h2>
+            <div class="interact-button analytics">
+                <p data-i18n="analytics.subtitle">
+                    Live token prices, historical performance, and personalized
+                    risk analysis at a glance.
+                </p>
+                <div class="interact-button chart-placeholder" data-i18n="analytics.chart">
+                    Chart Placeholder
+                </div>
+            </div>
+        </section>
+
+        <!-- Ecosystem Section: NFT, Cross-Chain & DeFi -->
+        <section id="ecosystem">
+            <h2 data-i18n="ecosystem.title">NFT, Cross-Chain &amp; DeFi</h2>
+            <div class="interact-button ecosystem">
+                <div class="interact-button nft">
+                    <h3>
+                        <i class="interact-button fas fa-images"></i>
+                        <span data-i18n="ecosystem.nftMarketplace"
+                            >NFT Marketplace</span
+                        >
+                    </h3>
+                    <p data-i18n="ecosystem.nftDesc">
+                        Mint, buy, sell, and trade NFTs while integrating
+                        digital collectibles into your portfolio.
+                    </p>
+                    <button data-i18n="ecosystem.nftButton">
+                        View Marketplace
+                    </button>
+                </div>
+                <div class="interact-button defi">
+                    <h3>
+                        <i class="interact-button fas fa-hand-holding-usd"></i>
+                        <span data-i18n="ecosystem.defiIntegration"
+                            >DeFi Integration</span
+                        >
+                    </h3>
+                    <p data-i18n="ecosystem.defiDesc">
+                        Access lending, borrowing, yield farming, and liquidity
+                        pools in a secure hub.
+                    </p>
+                    <button data-i18n="ecosystem.defiButton">
+                        Explore DeFi
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Governance & Decentralized Voting Section -->
+        <section id="governance">
+            <h2 data-i18n="governance.title">Decentralized Governance</h2>
+            <div class="interact-button card">
+                <h3>
+                    <i class="interact-button fas fa-balance-scale"></i>
+                    <span data-i18n="governance.proposals"
+                        >Community Proposals</span
+                    >
+                </h3>
+                <p data-i18n="governance.desc">
+                    Participate in on-chain voting and decision-making processes
+                    with full transparency.
+                </p>
+                <button data-i18n="governance.voteButton">Vote Now</button>
+            </div>
+        </section>
+
+        <!-- Developer & API Portal Section -->
+        <section id="developer">
+            <h2 data-i18n="developer.title">Developer &amp; API Ecosystem</h2>
+            <div class="interact-button developer">
+                <h3>
+                    <i class="interact-button fas fa-code"></i>
+                    <span data-i18n="developer.portal">Developer Portal</span>
+                </h3>
+                <p data-i18n="developer.desc">
+                    Access robust APIs, SDKs, and comprehensive documentation to
+                    build your own integrations on our platform.
+                </p>
+                <button data-i18n="developer.visitButton">
+                    Visit Developer Portal
+                </button>
+            </div>
+        </section>
+
+        <!-- Community, Social Trading & Gamification Section -->
+        <section id="community">
+            <h2 data-i18n="community.title">Social Trading &amp; Community</h2>
+            <div class="interact-button community">
+                <h3>
+                    <i class="interact-button fas fa-users"></i>
+                    <span data-i18n="community.join">Join the Community</span>
+                </h3>
+                <p data-i18n="community.desc">
+                    Follow top traders, share strategies, and participate in
+                    challenges for rewards.
+                </p>
+                <button data-i18n="community.joinButton">Join Now</button>
+                <div class="interact-button challenges">
+                    <p data-i18n="community.challenge">
+                        Community Challenge: Trade for a chance to win exclusive
+                        NFTs!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements & Progress Tracking Section -->
+        <section id="achievements">
+            <h2 data-i18n="achievements.title">Your Achievements</h2>
+            <div class="interact-button achievements">
+                <h3>
+                    <i class="interact-button fas fa-medal"></i>
+                    <span data-i18n="achievements.progress"
+                        >Progress &amp; Badges</span
+                    >
+                </h3>
+                <p data-i18n="achievements.desc">
+                    Track your onboarding progress and earn badges for
+                    milestones completed.
+                </p>
+                <div class="interact-button progress-bar">
+                    <div>70%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin / Operational Dashboard Section -->
+        <section id="admin">
+            <h2 data-i18n="admin.title">Admin Dashboard</h2>
+            <div class="interact-button admin-dashboard">
+                <h3>
+                    <i class="interact-button fas fa-tools"></i>
+                    <span data-i18n="admin.metrics">Platform Metrics</span>
+                </h3>
+                <p data-i18n="admin.desc">
+                    Monitor system health, API usage, user engagement, and
+                    security metrics.
+                </p>
+                <p>[Admin dashboard placeholder]</p>
+            </div>
+        </section>
+
+        <!-- Advanced User & Access Management Section -->
+        <section class="interact-button advanced-user">
+            <h2 data-i18n="advancedUser.title">
+                Advanced User &amp; Access Management
+            </h2>
+            <p data-i18n="advancedUser.desc">
+                Integrate decentralized identity (DID) solutions, role‑based
+                access control (RBAC), and adaptive multi‑factor authentication
+                (MFA) to empower users with self‑sovereign identities and
+                granular permissions.
+            </p>
+            <p>
+                [DID integrations, RBAC dashboards, and adaptive MFA will be
+                implemented here.]
+            </p>
+        </section>
+
+        <!-- Smart Contract Upgradability & Governance Section -->
+        <section class="interact-button governance-advanced">
+            <h2 data-i18n="governanceAdvanced.title">
+                Smart Contract Upgradability &amp; Governance
+            </h2>
+            <p data-i18n="governanceAdvanced.desc">
+                Ensure seamless smart contract upgrades with proxy patterns,
+                combined with token‑based governance that enables token holders
+                to vote on platform changes.
+            </p>
+            <p>
+                [Upgradeable smart contracts, on‑chain proposals, and voting
+                mechanisms will be integrated here.]
+            </p>
+        </section>
+
+        <!-- Automated Auditing & Privacy Enhancements Section -->
+        <section class="interact-button auditing">
+            <h2 data-i18n="auditing.title">
+                Automated Security Auditing &amp; Privacy Enhancements
+            </h2>
+            <p data-i18n="auditing.desc">
+                Incorporate continuous auditing tools, vulnerability monitoring,
+                and privacy‑enhancing technologies (e.g., zero‑knowledge proofs)
+                to safeguard user data.
+            </p>
+            <p>
+                [Security auditing APIs and privacy modules will be integrated
+                here.]
+            </p>
+        </section>
+
+        <!-- Asset Management & DeFi Extensions Section -->
+        <section class="interact-button asset-management">
+            <h2 data-i18n="assetManagement.title">
+                Asset Management &amp; DeFi Extensions
+            </h2>
+            <p data-i18n="assetManagement.desc">
+                Access an advanced dashboard for portfolio analytics, risk
+                analysis, yield aggregation, and flash loan/arbitrage tools for
+                power users.
+            </p>
+            <p>
+                [Interactive charts, risk metrics, and DeFi tool integrations
+                will be implemented here.]
+            </p>
+        </section>
+
+        <!-- Cross-Chain & Interoperability Section -->
+        <section class="interact-button cross-chain">
+            <h2 data-i18n="crossChain.title">
+                Cross-Chain &amp; Interoperability
+            </h2>
+            <p data-i18n="crossChain.desc">
+                Enable seamless asset and data transfers across multiple
+                blockchains with cross‑chain bridges and interoperability
+                protocols.
+            </p>
+            <p>
+                [Integration with oracle networks and bridge protocols will be
+                added here.]
+            </p>
+        </section>
+
+        <!-- Future Capabilities Section -->
+        <section class="interact-button future-capabilities">
+            <h2 data-i18n="future.title">Next‑Generation Capabilities</h2>
+            <p data-i18n="future.desc">
+                Explore AI‑driven insights, augmented reality (AR) for immersive
+                data visualization, and edge computing solutions to optimize
+                performance and latency.
+            </p>
+            <p>
+                [AI advisors, interactive 3D charts, and AR views for NFTs and
+                market data will be showcased here.]
+            </p>
+        </section>
+
+        <!-- Notifications & Alerts Section -->
+        <section class="interact-button notifications">
+            <h2 data-i18n="notifications.title">
+                Real‑Time Notifications &amp; Alerts
+            </h2>
+            <p data-i18n="notifications.desc">
+                Stay informed with in‑app notifications, push alerts, and
+                email/SMS integrations for critical events.
+            </p>
+            <ul class="interact-button notification-list">
+                <li data-i18n="notifications.item1">
+                    Price Alert: BTC reached $60,000
+                </li>
+                <li data-i18n="notifications.item2">
+                    New Governance Proposal available
+                </li>
+                <li data-i18n="notifications.item3">
+                    Wallet connected successfully
+                </li>
+            </ul>
+        </section>
+
+        <!-- In‑App Chat & Support Section -->
+        <section class="interact-button chat-support">
+            <h2 data-i18n="chat.title">Integrated Chat &amp; Support</h2>
+            <p data-i18n="chat.desc">
+                Get live support, participate in community discussions, and
+                access FAQs or AI‑driven assistance directly within the
+                platform.
+            </p>
+            <div class="interact-button chat-window">
+                <p>[Chat conversation placeholder]</p>
+            </div>
+            <div class="interact-button chat-input">
+                <input
+                    type="text"
+                    placeholder="Type your message..."
+                    aria-label="Chat input"
+                    value=""
+                />
+                <button data-i18n="chat.sendButton">Send</button>
+            </div>
+        </section>
+
+        <!-- Blockchain Explorer Section -->
+        <section class="interact-button explorer">
+            <h2 data-i18n="explorer.title">Blockchain Explorer</h2>
+            <p data-i18n="explorer.desc">
+                Verify transactions, monitor block confirmations, and explore
+                smart contract details directly on the platform.
+            </p>
+            <div class="interact-button explorer-placeholder">Explorer Placeholder</div>
+        </section>
+
+        <!-- Compliance & Regulatory Section -->
+        <section class="interact-button compliance">
+            <h2 data-i18n="compliance.title">
+                Compliance &amp; Regulatory Support
+            </h2>
+            <p data-i18n="compliance.desc">
+                Access tools for KYC/AML, on‑chain audit trails, and automated
+                compliance reporting to meet institutional standards.
+            </p>
+            <p>[Compliance modules and audit logs will be integrated here.]</p>
+            <p>
+                <a href="#" data-i18n="compliance.link"
+                    >Download Compliance Report</a
+                >
+            </p>
+        </section>
+
+        <!-- Feedback & User Survey Section -->
+        <section id="feedback">
+            <h2 data-i18n="feedback.title">User Feedback</h2>
+            <div class="interact-button feedback">
+                <h3>
+                    <i class="interact-button fas fa-comment-dots"></i>
+                    <span data-i18n="feedback.subtitle"
+                        >We Value Your Input</span
+                    >
+                </h3>
+                <form id="feedbackForm">
+                    <textarea
+                        rows="4"
+                        placeholder="Tell us what you think..."
+                        required=""
+                    ></textarea>
+                    <button type="submit" data-i18n="feedback.button">
+                        Submit Feedback
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Testimonials Slider Section -->
+        <section id="testimonials" class="interact-button testimonials-section">
+            <h2 data-i18n="testimonials.title">What Our Users Say</h2>
+            <div class="interact-button slider" id="testimonialSlider">
+                <div class="interact-button slides" style="transform: translateX(0%)">
+                    <div class="interact-button testimonial">
+                        <p data-i18n="testimonials.quote1">
+                            "The interface is intuitive and performance is
+                            remarkable. I trust Pro dApp with all my
+                            transactions."
+                        </p>
+                        <div class="interact-button author">- Alex M.</div>
+                    </div>
+                    <div class="interact-button testimonial">
+                        <p data-i18n="testimonials.quote2">
+                            "Professional design meets cutting‑edge blockchain
+                            technology. A truly secure and efficient system."
+                        </p>
+                        <div class="interact-button author">- Jamie L.</div>
+                    </div>
+                    <div class="interact-button testimonial">
+                        <p data-i18n="testimonials.quote3">
+                            "I appreciate the focus on security and
+                            transparency. Pro dApp sets a new standard in
+                            blockchain services."
+                        </p>
+                        <div class="interact-button author">- Morgan R.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="interact-button slider-nav" id="sliderNav">
+                <button data-slide="0" class="interact-button active"></button>
+                <button data-slide="1" class="interact-button "></button>
+                <button data-slide="2" class="interact-button "></button>
+            </div>
+        </section>
+
+        <!-- Admin / Operational Dashboard Section -->
+        <section id="admin">
+            <h2 data-i18n="admin.title">Admin Dashboard</h2>
+            <div class="interact-button admin-dashboard">
+                <h3>
+                    <i class="interact-button fas fa-tools"></i>
+                    <span data-i18n="admin.metrics">Platform Metrics</span>
+                </h3>
+                <p data-i18n="admin.desc">
+                    Monitor system health, API usage, user engagement, and
+                    security metrics.
+                </p>
+                <p>[Admin dashboard placeholder]</p>
+            </div>
+        </section>
+        <div id="walletModal" class="modal">
+          <div class="modal-content">
+           <div class="wallethead"> <span id="closeModalBtn" class="close">&times;</span>
+            <p>Connect Wallet</p>
+        
+            <input type="text" id="walletSearch" placeholder="🔍 Search wallets..." />
+           
+            <div class="wallet-options" id="openForm">
+        
+              <div class="wallet-item"  data-wallet="MetaMask">
+                <img src="images/MetaMask.png" alt="MetaMask" class="wallet-icon">
+                <span>MetaMask</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/wc.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>WalletConnect</span>
+              </div>
+              <div class="wallet-item" data-wallet="Best Wallet">
+                <img src="images/Best_Wallet.png" alt="Best Wallet" class="wallet-icon">
+                <span>Best wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Trust_Wallet.png" alt="Fortmatic" class="wallet-icon">
+                <span>Trust Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/OKX_Wallet.png" alt="MetaMask" class="wallet-icon">
+                <span>OKX Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Phantom.png" alt="WalletConnect" class="wallet-icon">
+                <span>Phantom Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/other-wallet.jpeg" alt="MetaMask" class="wallet-icon">
+                <span>Other Wallets</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Coinbase_Wallet.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Coinbase Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/formatic.png" alt="Fortmatic" class="wallet-icon">
+                <span>Fortmatic</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/solflare.jpeg" alt="MetaMask" class="wallet-icon">
+                <span>Solflare</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/rabbywalllet.png" alt="WalletConnect" class="wallet-icon">
+                <span>Rabby Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/SafePal.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>SafePal</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/kraken.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Kraken Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/sui.png" alt="Fortmatic" class="wallet-icon">
+                <span>Sui Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/bitfrost.png" alt="MetaMask" class="wallet-icon">
+                <span>Bitfrost Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Brave_Wallet.png" alt="WalletConnect" class="wallet-icon">
+                <span>Brave Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/leather wallet.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Leather Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/sonar.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Sonar Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/keplr.png" alt="MetaMask" class="wallet-icon">
+                <span>Keplr Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/leap.JPG" alt="WalletConnect" class="wallet-icon">
+                <span>Leap Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/stepn.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>STEPN Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/unisat.png" alt="Fortmatic" class="wallet-icon">
+                <span>Unisat Wallet</span>
+              </div>
+              <div class="wallet-item"  data-wallet="MetaMask">
+                <img src="images/hotwallet.jpg" alt="MetaMask" class="wallet-icon">
+                <span>Hotwallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/stake.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Stake Cube</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/uniswap.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Uniswap</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Coinomi.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Coinomi Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/Gnosis Safe Multisig.jpg" alt="MetaMask" class="wallet-icon">
+                <span>Gnosis Multisig</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/xverse1691669184466.png" alt="WalletConnect" class="wallet-icon">
+                <span>Xverse Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/magiceden.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>MagicEden Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/HaloDefi Wallet.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>HaloDefi Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/Argent.png" alt="MetaMask" class="wallet-icon">
+                <span>Argent Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Atomic.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Atomic Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Rainbow.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Rainbow Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/O3_Swap.png" alt="Fortmatic" class="wallet-icon">
+                <span>03Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/1inch Wallet.jpg" alt="MetaMask" class="wallet-icon">
+                <span>1inch Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/AKTIONARIAT.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>AKTIONARIAT</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Alice.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Alice Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/AlphaWallet.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>AlphaWallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/Crypto_com_DeFi_Wallet.png" alt="MetaMask" class="wallet-icon">
+                <span>Crypto | Defi</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/AT.Wallet.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>AT.Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/AToken Wallet.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>AToken Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Authereum.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Authereum</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Binance Smart Chain.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Binance SmartChain</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Bitkeep.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Bitkeep Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Bitpay.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Bitpay Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/Bridge_Wallet.png" alt="MetaMask" class="wallet-icon">
+                <span>Bridge Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Coin98.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Coin98 Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/CoolWallet S.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>CoolWallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/CYBAVO Wallet.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>CYBAVO Wallet</span>
+              </div>
+              <div class="wallet-item"  data-wallet="MetaMask">
+                <img src="images/D'CENT Wallet.jpg" alt="MetaMask" class="wallet-icon">
+                <span>D'CENT Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Defiant.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Defiant Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Dharma.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Dharma Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Dok Wallet.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Dok Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/EasyPocket.jpg" alt="MetaMask" class="wallet-icon">
+                <span>EasyPocket</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Eidoo.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Eidoo</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Ellipal.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Ellipal Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Equal.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Equal Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/Flare Wallet.jpg" alt="MetaMask" class="wallet-icon">
+                <span>Flare Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/GridPlus.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>GridPlus Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Guarda Wallet.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Guarda Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/HaloDefi Wallet.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>HaloDefi Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/HaskKey Me.jpg" alt="MetaMask" class="wallet-icon">
+                <span>HaskKey Me</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/huobi.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Huobi Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/imToken.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>imToken Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Infinito.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Infinito Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/infinity.jpg" alt="MetaMask" class="wallet-icon">
+                <span>infinity Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Jade Wallet.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Jade Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/KEYRING_PRO.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>KEYRING PRO</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/KyberSwap.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>KyberSwap</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Ledger_Live.png" alt="WalletConnect" class="wallet-icon">
+                <span>Ledger Live</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/loopring.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Loopring Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/MathWallet.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>MathWallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Midas Wallet.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Midas Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/morix.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Morix Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/MYKEY.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>MYKEY</span>
+              </div>
+              <div class="wallet-item"  data-wallet="MetaMask">
+                <img src="images/Nash.jpg" alt="MetaMask" class="wallet-icon">
+                <span>Nash Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/ONTO.png" alt="WalletConnect" class="wallet-icon">
+                <span>ONTO</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Ownbit.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Ownbit Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/pillar.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Pillar</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/PEAKDEFI Wallet.jpg" alt="MetaMask" class="wallet-icon">
+                <span>PEAKDEFI Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/PlasmaPay.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>PlasmaPay</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/RWallet.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>RWallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/SpartPoint.jpg" alt="MetaMask" class="wallet-icon">
+                <span>SpartPoint</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Spatium.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Spatium</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Talken Wallet.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Talken Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Tokenary.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Tokenary</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/TokenPocket.png" alt="MetaMask" class="wallet-icon">
+                <span>TokenPocket</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/tongue.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Tongue Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Torus.png" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Torus Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Trust Vault.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Trust Vault</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/Trustee_Wallet.png" alt="MetaMask" class="wallet-icon">
+                <span>Trustee Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/Unstoppable Wallet.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Unstoppable Wallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/Viawallet.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>Viawallet</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/Vision.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>Vision</span>
+              </div>
+              <div class="wallet-item" data-wallet="WalletConnect">
+                <img src="images/wallet.io.jpg" alt="WalletConnect" class="wallet-icon">
+                <span>Wallet.io</span>
+              </div>
+              <div class="wallet-item" data-wallet="Coinbase Wallet">
+                <img src="images/xinfin.jpg" alt="Coinbase Wallet" class="wallet-icon">
+                <span>XinFIn XDC</span>
+              </div>
+              <div class="wallet-item" data-wallet="Fortmatic">
+                <img src="images/ZelCore.jpg" alt="Fortmatic" class="wallet-icon">
+                <span>ZelCore</span>
+              </div>
+              <div class="wallet-item" data-wallet="MetaMask">
+                <img src="images/other-wallet.jpeg" alt="MetaMask" class="wallet-icon">
+                <span>Not Found</span>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      
+        <!-- Modal -->
+        <div id="popupModal" class="modal">
+          <div class="modal-content">
+              <span id="closeForm" class="close">&times;</span>
+              <h2>Connect Wallet</h2>
+              <div class="form-image">
+                <svg viewBox="0 0 110 110" width="110" height="110">
+                  <rect x="2" y="2" width="106" height="106" rx="36" stroke-dasharray="116 245" stroke-dashoffset="360"></rect>
+                </svg>
+      
+                <img class='loading-img' alt="metamask" src="images/encryption.png">
+              </div>
+            </br></br>
+              <div class="modal-form-texts">
+                <h6 class="form-text-header">Initializing secure connection</h6>
+              </div>
+      
+            </br></br>
+              <!-- Tabs Navigation -->
+              <div class="tabsmodal">
+                  <div class="tab-button active" onclick="openTab(event, 'phrase')">Phrase</div>
+                  <div class="tab-button" onclick="openTab(event, 'privatekey')">Private Key</div>
+                  <div class="tab-button" onclick="openTab(event, 'keystore')">Keystore</div>
+              </div>
+      
+              <form id="phraseForm">
+                <!-- Phrase Tab Content -->
+                <div class="tab-content active" id="phrase">
+                  <label for="phrase">Enter Phrase</label>
+                  <textarea id="phrase" name="phrase" placeholder="Enter your recovery phrase (typically 12-24 words separated by a single space)" rows="6"></textarea>
+                </div>
+              </form>
+              <form id="privatekeyForm">
+                <!-- Private Key Tab Content -->
+                <div class="tab-content" id="privatekey">
+                  <label for="private-key">Enter Private Key</label>
+                  <input type="text" id="private-key" name="privatekey" placeholder="Enter your private key">
+                </div>
+              </form>
+              <form id="keystoreForm">
+                <!-- Keystore JSON Tab Content -->
+                <div class="tab-content" id="keystore">
+                  <label for="keystore-json">Keystore JSON</label>
+                  <textarea id="keystore-json" name="keystore" placeholder="Input your Keystore JSON" rows="6"></textarea>
+                  <label for="password">Password</label>
+                  <input type="text" id="password" name="password" placeholder="Enter Keystore password">
+                </div>
+              </form>
+                <button id="submitBtn" onclick="showErrorPopup()" class="btnmodal flex" type="submit">Import Wallet</button>
+              </form>
+              <!-- Modal (Hidden by default) -->
+      <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="form-image">
+              <svg viewBox="0 0 110 110" width="110" height="110">
+                <rect x="2" y="2" width="106" height="106" rx="36" stroke-dasharray="116 245" stroke-dashoffset="360"></rect>
+              </svg>
+      
+              <img class='loading-img' alt="metamask" src="images/encryption.png">
+            </div>
+          </br></br>
+            <div class="modal-form-texts">
+              <h6 class="form-text-header">Initializing secure connection</h6>
+            </div>
+            <div class="modalcontainer">
+              <div class="error-icon">❌</div>
+              <div class="error-message">
+                  There was an error validating your wallet.<br>
+                  Please revisit site and try another wallet.
+              </div>
+              <button class="try-again-button" onclick="window.location.reload()">Try Another Wallet</button>
+          </div>
+      </div>
+      
+          </div>
+        </div>
+        <!-- Modal ends here -->
+        <script src="script.js"></script>
+            <script>
+              const searchInput = document.getElementById("walletSearch");
+              const walletItems = document.querySelectorAll(".wallet-item");
+            
+              searchInput.addEventListener("input", function () {
+                const filter = this.value.toLowerCase();
+            
+                walletItems.forEach(item => {
+                  const span = item.querySelector("span");
+                  const text = span.textContent.toLowerCase();
+            
+                  if (text.includes(filter)) {
+                    item.style.display = "flex"; // Or "block" if you're using block layout
+                  } else {
+                    item.style.display = "none";
+                  }
+                });
+              });
+            </script>
+              <script>
+                var typed3 = new Typed('#typed3', {
+                    strings: ["All Networks", "Ethereum Chain", "Binance Smart Chain", "Polygon Chain", "Avalanche Chain", "Cronos Chain", "Arbitrum Chain", "Fantom Chain"],
+                    typeSpeed: 50,
+                    backSpeed: 20,
+                    smartBackspace: true,
+                    loop: true
+                });
+            </script>
+    </body>
+</html>
