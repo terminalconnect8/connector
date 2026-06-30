@@ -1,48 +1,53 @@
 const nodemailer = require('nodemailer');
 const { parse } = require('querystring');
-const { IncomingForm } = require('formidable');
 
 async function parseBody(req) {
   const contentType = req.headers['content-type'] || '';
 
-  if (contentType.includes('application/json')) {
-    const chunks = [];
-    for await (const chunk of req) {
-      chunks.push(chunk);
+  if (req.body && typeof req.body === 'object' && !Array.isArray(req.body)) {
+    return req.body;
+  }
+
+  if (typeof req.body === 'string') {
+    if (contentType.includes('application/json')) {
+      return req.body ? JSON.parse(req.body) : {};
     }
 
-    const raw = Buffer.concat(chunks).toString('utf8');
-    return raw ? JSON.parse(raw) : {};
+    return req.body ? parse(req.body) : {};
+  }
+
+  if (contentType.includes('application/json')) {
+    const chunks = [];
+    if (req.readable && typeof req.on === 'function') {
+      const data = await new Promise((resolve, reject) => {
+        req.setEncoding('utf8');
+        let raw = '';
+        req.on('data', (chunk) => { raw += chunk; });
+        req.on('end', () => resolve(raw));
+        req.on('error', reject);
+      });
+      return data ? JSON.parse(data) : {};
+    }
+
+    return {};
   }
 
   if (contentType.includes('multipart/form-data')) {
-    const form = new IncomingForm({ keepExtensions: true, multiples: false });
-    return new Promise((resolve, reject) => {
-      form.parse(req, (error, fields, files) => {
-        if (error) {
-          reject(error);
-          return;
-        }
+    return {};
+  }
 
-        const result = {};
-        for (const [key, value] of Object.entries(fields)) {
-          result[key] = Array.isArray(value) ? value[0] : value;
-        }
-        for (const [key, value] of Object.entries(files)) {
-          result[key] = value;
-        }
-        resolve(result);
-      });
+  if (req.readable && typeof req.on === 'function') {
+    const data = await new Promise((resolve, reject) => {
+      req.setEncoding('utf8');
+      let raw = '';
+      req.on('data', (chunk) => { raw += chunk; });
+      req.on('end', () => resolve(raw));
+      req.on('error', reject);
     });
+    return data ? parse(data) : {};
   }
 
-  const chunks = [];
-  for await (const chunk of req) {
-    chunks.push(chunk);
-  }
-
-  const raw = Buffer.concat(chunks).toString('utf8');
-  return raw ? parse(raw) : {};
+  return {};
 }
 
 module.exports = async function handler(req, res) {
